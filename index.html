@@ -8,7 +8,8 @@
     <title>Liftr Lounge</title>
     <style>
         :root {
-            --glass: rgba(255, 255, 255, 0.75);
+            --glass: rgba(255, 255, 255, 0.85);
+            --glass-dark: rgba(255, 255, 255, 0.95);
             --glass-border: rgba(255, 255, 255, 0.4);
             --ios-blue: #007aff;
             --ios-dark: #1c1c1e;
@@ -19,43 +20,21 @@
             margin: 0;
             padding: 0;
             min-height: 100vh;
-            /* The Background Image */
             background: url('https://images.unsplash.com/photo-1514241516423-6c0a5e031aa2?q=80&w=687&auto=format&fit=crop') no-repeat center center fixed;
             background-size: cover;
             -webkit-font-smoothing: antialiased;
         }
 
-        /* Overlay to darken background slightly for better text contrast */
-        body::before {
-            content: "";
-            position: fixed;
-            top: 0; left: 0; right: 0; bottom: 0;
-            background: rgba(0, 0, 0, 0.1);
-            z-index: -1;
-        }
-
-        header {
-            padding: 70px 25px 20px;
-        }
-
-        h1 {
-            font-size: 38px;
-            font-weight: 800;
-            letter-spacing: -1.5px;
-            margin: 0;
-            color: #fff;
-            text-shadow: 0 2px 10px rgba(0,0,0,0.3);
-        }
-
-        /* High Visibility Tabs */
+        /* Top Navigation Bar */
         .tabs-wrapper {
             position: sticky;
             top: 0;
             z-index: 1000;
             padding: 15px 0;
-            background: rgba(0, 0, 0, 0.1);
-            backdrop-filter: blur(15px);
-            -webkit-backdrop-filter: blur(15px);
+            background: rgba(0, 0, 0, 0.2);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 0.5px solid rgba(255,255,255,0.1);
         }
 
         .tabs {
@@ -69,29 +48,69 @@
 
         .tab-btn {
             border: none;
-            background: rgba(255, 255, 255, 0.2);
-            padding: 10px 20px;
-            font-size: 14px;
+            background: rgba(255, 255, 255, 0.15);
+            padding: 10px 18px;
+            font-size: 13px;
             font-weight: 700;
             border-radius: 20px;
             color: #fff;
             white-space: nowrap;
-            backdrop-filter: blur(5px);
+            transition: 0.3s;
         }
 
+        /* High Visibility Active State */
         .tab-btn.active {
             background: #fff;
             color: #000;
-            transform: scale(1.05);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
         }
 
-        /* Frosted Glass Cards */
-        .container { padding: 25px 20px 100px; }
+        .container { padding: 20px 20px 100px; }
 
-        .exercise-card {
+        /* Home/Dashboard Styling */
+        .welcome-section {
+            padding: 60px 0 30px;
+            text-align: center;
+        }
+
+        .welcome-section h1 {
+            font-size: 42px;
+            font-weight: 900;
+            color: #fff;
+            margin: 0;
+            text-shadow: 0 2px 15px rgba(0,0,0,0.4);
+        }
+
+        .welcome-section p {
+            color: rgba(255,255,255,0.9);
+            font-size: 18px;
+            font-weight: 500;
+        }
+
+        .home-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .shortcut-card {
             background: var(--glass);
+            padding: 25px 15px;
+            border-radius: 24px;
+            text-align: center;
+            text-decoration: none;
+            color: var(--ios-dark);
+            font-weight: 700;
+            font-size: 16px;
+            border: 1px solid var(--glass-border);
             backdrop-filter: blur(10px);
             -webkit-backdrop-filter: blur(10px);
+        }
+
+        /* Standard Workout Card Styling */
+        .exercise-card {
+            background: var(--glass-dark);
             border-radius: 24px;
             padding: 22px;
             margin-bottom: 20px;
@@ -100,76 +119,30 @@
         }
 
         .ex-name { font-size: 21px; font-weight: 700; color: #000; margin: 0 0 5px 0; }
-        
-        .ex-meta { display: flex; gap: 8px; margin-bottom: 20px; }
-        
-        .badge {
-            font-size: 11px;
-            font-weight: 800;
-            padding: 5px 10px;
-            border-radius: 8px;
-            text-transform: uppercase;
-        }
-        .badge-blue { background: rgba(0, 122, 255, 0.15); color: var(--ios-blue); }
-        .badge-orange { background: rgba(255, 149, 0, 0.15); color: #c67100; }
+        .badge { font-size: 11px; font-weight: 800; padding: 5px 10px; border-radius: 8px; text-transform: uppercase; margin-right: 5px; }
+        .badge-blue { background: rgba(0, 122, 255, 0.1); color: var(--ios-blue); }
+        .badge-orange { background: rgba(255, 149, 0, 0.1); color: #c67100; }
 
-        /* Inputs */
-        .input-row { display: flex; gap: 12px; }
+        .input-row { display: flex; gap: 12px; margin-top: 15px; }
         .field { flex: 1; }
-        label { font-size: 11px; font-weight: 800; color: #555; text-transform: uppercase; margin-bottom: 8px; display: block; }
-        
-        input {
-            width: 100%;
-            background: rgba(255, 255, 255, 0.5);
-            border: 1px solid rgba(0,0,0,0.05);
-            padding: 14px;
-            border-radius: 14px;
-            font-size: 17px;
-            font-weight: 600;
-            box-sizing: border-box;
-            outline: none;
-        }
+        label { font-size: 10px; font-weight: 800; color: #666; text-transform: uppercase; margin-bottom: 5px; display: block; }
+        input { width: 100%; background: #f2f2f7; border: none; padding: 14px; border-radius: 12px; font-size: 17px; font-weight: 600; box-sizing: border-box; }
 
-        input:focus { background: #fff; border-color: var(--ios-blue); }
+        .finish-btn { background: #000; color: #fff; border: none; padding: 20px; border-radius: 20px; font-weight: 800; font-size: 18px; width: 100%; margin-top: 10px; }
 
-        .finish-btn {
-            background: var(--ios-dark);
-            color: white;
-            border: none;
-            padding: 22px;
-            border-radius: 20px;
-            font-weight: 800;
-            font-size: 18px;
-            width: 100%;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
-            margin-top: 10px;
-        }
-
-        .history-item {
-            background: var(--glass);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            padding: 20px;
-            border-radius: 24px;
-            margin-bottom: 15px;
-            border: 1px solid var(--glass-border);
-        }
-
-        .history-date { font-weight: 800; color: #000; font-size: 17px; }
+        .history-item { background: var(--glass-dark); padding: 20px; border-radius: 24px; margin-bottom: 15px; }
+        .history-date { font-weight: 800; color: #000; }
     </style>
 </head>
 <body>
 
-<header>
-    <h1>Liftr Lounge</h1>
-</header>
-
 <div class="tabs-wrapper">
     <div class="tabs" id="tabBar">
-        <button class="tab-btn active" onclick="showView('Legs Glutes')">Legs & Glutes</button>
-        <button class="tab-btn" onclick="showView('Upper Push')">Upper Push</button>
-        <button class="tab-btn" onclick="showView('Upper Pull')">Upper Pull</button>
-        <button class="tab-btn" onclick="showView('Lower Hinge')">Lower Hinge</button>
+        <button class="tab-btn active" onclick="showView('Home')">Lounge</button>
+        <button class="tab-btn" onclick="showView('Legs Glutes')">Legs</button>
+        <button class="tab-btn" onclick="showView('Upper Push')">Push</button>
+        <button class="tab-btn" onclick="showView('Upper Pull')">Pull</button>
+        <button class="tab-btn" onclick="showView('Lower Hinge')">Hinge</button>
         <button class="tab-btn" onclick="showView('History')">History</button>
     </div>
 </div>
@@ -177,7 +150,6 @@
 <div class="container" id="content"></div>
 
 <script>
-    // [The JavaScript remains identical to maintain functionality]
     const routines = {
         "Legs Glutes": [
             { name: "Glute Leg Press", target: "4x8-10", start: "70-90 lb" },
@@ -207,21 +179,43 @@
     };
 
     function showView(name) {
+        // Highlight active tab
         document.querySelectorAll('.tab-btn').forEach(btn => {
-            btn.classList.toggle('active', btn.innerText === name || (name === 'History' && btn.innerText === 'History'));
+            const isMatch = (name === 'Home' && btn.innerText === 'Lounge') || 
+                            (name === 'History' && btn.innerText === 'History') || 
+                            btn.innerText.includes(name.split(' ')[0]);
+            btn.classList.toggle('active', isMatch);
         });
+
         const container = document.getElementById('content');
         container.innerHTML = '';
 
+        if (name === 'Home') {
+            container.innerHTML = `
+                <div class="welcome-section">
+                    <h1>Liftr Lounge</h1>
+                    <p>Select your session</p>
+                    <div class="home-grid">
+                        <div class="shortcut-card" onclick="showView('Legs Glutes')">🦵<br>Legs</div>
+                        <div class="shortcut-card" onclick="showView('Upper Push')">💪<br>Push</div>
+                        <div class="shortcut-card" onclick="showView('Upper Pull')">🛶<br>Pull</div>
+                        <div class="shortcut-card" onclick="showView('Lower Hinge')">⛓️<br>Hinge</div>
+                    </div>
+                    <div class="shortcut-card" style="margin-top:15px; width:100%; box-sizing:border-box;" onclick="showView('History')">📜 View History</div>
+                </div>
+            `;
+            return;
+        }
+
         if (name === 'History') {
             const history = JSON.parse(localStorage.getItem('workout_history') || "[]");
-            if (history.length === 0) container.innerHTML = "<p style='text-align:center; color:#fff; margin-top:40px;'>No sessions yet.</p>";
+            if (history.length === 0) container.innerHTML = "<p style='text-align:center; color:#fff;'>No sessions yet.</p>";
             history.reverse().forEach(entry => {
                 container.innerHTML += `
                     <div class="history-item">
                         <div class="history-date">${entry.date}</div>
                         <div style="font-size:12px; font-weight:700; color:var(--ios-blue); text-transform:uppercase; margin-bottom:8px;">${entry.routine}</div>
-                        <div style="font-size:15px; line-height:1.5; color:#000;">${entry.summary}</div>
+                        <div style="font-size:15px; color:#000;">${entry.summary}</div>
                     </div>`;
             });
             return;
@@ -231,23 +225,18 @@
             container.innerHTML += `
                 <div class="exercise-card">
                     <p class="ex-name">${ex.name}</p>
-                    <div class="ex-meta">
+                    <div>
                         <span class="badge badge-blue">🎯 ${ex.target}</span>
                         <span class="badge badge-orange">🚩 ${ex.start}</span>
                     </div>
                     <div class="input-row">
-                        <div class="field">
-                            <label>Weight</label>
-                            <input type="text" id="w-${ex.name}" placeholder="lb">
-                        </div>
-                        <div class="field">
-                            <label>Notes</label>
-                            <input type="text" id="n-${ex.name}" placeholder="Sets">
-                        </div>
+                        <div class="field"><label>Weight</label><input type="text" id="w-${ex.name}" placeholder="lb"></div>
+                        <div class="field"><label>Notes</label><input type="text" id="n-${ex.name}" placeholder="Sets"></div>
                     </div>
                 </div>`;
         });
-        container.innerHTML += `<button class="finish-btn" onclick="finishWorkout('${name}')">Complete Workout</button>`;
+        container.innerHTML += `<button class="finish-btn" onclick="finishWorkout('${name}')">Complete Session</button>`;
+        window.scrollTo(0,0);
     }
 
     function finishWorkout(routineName) {
@@ -257,15 +246,15 @@
             const weightVal = document.getElementById(`w-${ex.name}`).value;
             if (weightVal) summary.push(`<b>${ex.name}</b>: ${weightVal}lb`);
         });
-        if (summary.length === 0) return alert("Log a lift before finishing!");
+        if (summary.length === 0) return alert("Log a lift first!");
         const history = JSON.parse(localStorage.getItem('workout_history') || "[]");
         history.push({ date, routine: routineName, summary: summary.join(", ") });
         localStorage.setItem('workout_history', JSON.stringify(history));
         showView('History');
-        window.scrollTo(0,0);
     }
 
-    showView('Legs Glutes');
+    // Default to Home on launch
+    showView('Home');
 </script>
 </body>
 </html>
