@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <link rel="manifest" href="manifest.json">
+    <title>Workout Tracker</title>
+    <style>
+        :root { --bg: #f4f4f9; --card: #ffffff; --primary: #007aff; }
+        body { font-family: -apple-system, system-ui; background: var(--bg); margin: 0; padding: 20px; }
+        h2 { color: #333; }
+        .routine-select { display: flex; gap: 10px; margin-bottom: 20px; overflow-x: auto; padding-bottom: 10px; }
+        button { background: var(--primary); color: white; border: none; padding: 10px 15px; border-radius: 8px; font-weight: 600; cursor: pointer; white-space: nowrap; }
+        .card { background: var(--card); padding: 15px; border-radius: 12px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); margin-bottom: 10px; }
+        input { width: 60px; padding: 8px; border: 1px solid #ddd; border-radius: 5px; }
+        .done-btn { background: #4cd964; margin-left: 10px; }
+    </style>
+</head>
+<body>
+
+    <h2>Gym Log</h2>
+    <div class="routine-select" id="menu"></div>
+    <div id="exercise-list"></div>
+
+    <script>
+        const routines = {
+            "Legs Glutes": ["Leg Press", "Smith Squat", "Glute Kickback", "Leg Extension"],
+            "Upper Push": ["Incline Bench", "Chest Press", "Military Press", "Lateral Raise"],
+            "Upper Pull": ["Cable Row", "Lat Pulldown", "Preacher Curl", "Hammer Curl"]
+        };
+
+        const menu = document.getElementById('menu');
+        const list = document.getElementById('exercise-list');
+
+        Object.keys(routines).forEach(name => {
+            let btn = document.createElement('button');
+            btn.innerText = name;
+            btn.onclick = () => loadRoutine(name);
+            menu.appendChild(btn);
+        });
+
+        function loadRoutine(name) {
+            list.innerHTML = `<h3>${name}</h3>`;
+            routines[name].forEach(ex => {
+                const saved = localStorage.getItem(ex) || "";
+                let div = document.createElement('div');
+                div.className = 'card';
+                div.innerHTML = `
+                    <strong>${ex}</strong><br>
+                    <input type="number" id="input-${ex}" value="${saved}" placeholder="lb">
+                    <button class="done-btn" onclick="save('${ex}')">✅</button>
+                `;
+                list.appendChild(div);
+            });
+        }
+
+        function save(ex) {
+            const val = document.getElementById(`input-${ex}`).value;
+            localStorage.setItem(ex, val);
+            alert("Saved!");
+        }
+    </script>
+</body>
+</html>
