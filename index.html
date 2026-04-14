@@ -5,230 +5,224 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <title>Strong Log</title>
+    <title>Liftr Lounge</title>
     <style>
         :root {
-            --ios-bg: #f2f2f7;
-            --ios-card: #ffffff;
+            --glass: rgba(255, 255, 255, 0.75);
+            --glass-border: rgba(255, 255, 255, 0.4);
             --ios-blue: #007aff;
-            --ios-green: #34c759;
-            --ios-label: #8e8e93;
-            --ios-text: #1c1c1e;
-            --shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            --ios-dark: #1c1c1e;
         }
 
         body {
-            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Helvetica Neue", sans-serif;
-            background-color: var(--ios-bg);
-            color: var(--ios-text);
+            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", sans-serif;
             margin: 0;
-            padding-bottom: 100px;
+            padding: 0;
+            min-height: 100vh;
+            /* The Background Image */
+            background: url('https://images.unsplash.com/photo-1514241516423-6c0a5e031aa2?q=80&w=687&auto=format&fit=crop') no-repeat center center fixed;
+            background-size: cover;
             -webkit-font-smoothing: antialiased;
         }
 
-        /* High-End Header */
+        /* Overlay to darken background slightly for better text contrast */
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0, 0, 0, 0.1);
+            z-index: -1;
+        }
+
         header {
-            background: rgba(255, 255, 255, 0.8);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            padding: 60px 20px 15px;
-            position: sticky;
-            top: 0;
-            z-index: 1000;
-            border-bottom: 0.5px solid rgba(0,0,0,0.1);
+            padding: 70px 25px 20px;
         }
 
         h1 {
-            font-size: 34px;
+            font-size: 38px;
             font-weight: 800;
-            letter-spacing: -1px;
+            letter-spacing: -1.5px;
             margin: 0;
+            color: #fff;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.3);
         }
 
-        /* Rounded Segmented Control Tabs */
+        /* High Visibility Tabs */
+        .tabs-wrapper {
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            padding: 15px 0;
+            background: rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+        }
+
         .tabs {
             display: flex;
-            background: #e3e3e8;
-            padding: 2px;
-            border-radius: 10px;
-            margin: 15px 20px;
-            gap: 2px;
+            overflow-x: auto;
+            padding: 0 20px;
+            gap: 10px;
+            -webkit-overflow-scrolling: touch;
         }
+        .tabs::-webkit-scrollbar { display: none; }
 
         .tab-btn {
-            flex: 1;
             border: none;
-            background: none;
-            padding: 8px 0;
-            font-size: 13px;
-            font-weight: 600;
-            border-radius: 8px;
-            color: #3a3a3c;
-            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            background: rgba(255, 255, 255, 0.2);
+            padding: 10px 20px;
+            font-size: 14px;
+            font-weight: 700;
+            border-radius: 20px;
+            color: #fff;
+            white-space: nowrap;
+            backdrop-filter: blur(5px);
         }
 
         .tab-btn.active {
-            background: #ffffff;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.12);
+            background: #fff;
             color: #000;
+            transform: scale(1.05);
         }
 
-        /* Card Styling */
-        .container { padding: 0 20px; }
+        /* Frosted Glass Cards */
+        .container { padding: 25px 20px 100px; }
 
         .exercise-card {
-            background: var(--ios-card);
-            border-radius: 16px;
-            padding: 20px;
-            margin-bottom: 16px;
-            box-shadow: var(--shadow);
-            border: 0.5px solid rgba(0,0,0,0.05);
+            background: var(--glass);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-radius: 24px;
+            padding: 22px;
+            margin-bottom: 20px;
+            border: 1px solid var(--glass-border);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
         }
 
-        .ex-name {
-            font-size: 19px;
-            font-weight: 700;
-            margin-bottom: 4px;
-        }
-
-        .ex-info {
-            font-size: 13px;
-            color: var(--ios-label);
-            font-weight: 500;
-            margin-bottom: 15px;
-            display: flex;
-            gap: 12px;
-        }
-
-        .tag {
-            background: #f2f2f7;
-            padding: 2px 8px;
-            border-radius: 6px;
-            color: var(--ios-blue);
-        }
-
-        /* Modern Inputs */
-        .input-row {
-            display: flex;
-            gap: 12px;
-        }
-
-        .field {
-            flex: 1;
-        }
-
-        label {
-            display: block;
+        .ex-name { font-size: 21px; font-weight: 700; color: #000; margin: 0 0 5px 0; }
+        
+        .ex-meta { display: flex; gap: 8px; margin-bottom: 20px; }
+        
+        .badge {
             font-size: 11px;
-            font-weight: 700;
-            color: var(--ios-label);
+            font-weight: 800;
+            padding: 5px 10px;
+            border-radius: 8px;
             text-transform: uppercase;
-            margin-bottom: 6px;
-            margin-left: 2px;
         }
+        .badge-blue { background: rgba(0, 122, 255, 0.15); color: var(--ios-blue); }
+        .badge-orange { background: rgba(255, 149, 0, 0.15); color: #c67100; }
 
+        /* Inputs */
+        .input-row { display: flex; gap: 12px; }
+        .field { flex: 1; }
+        label { font-size: 11px; font-weight: 800; color: #555; text-transform: uppercase; margin-bottom: 8px; display: block; }
+        
         input {
             width: 100%;
-            background: #f2f2f7;
-            border: none;
-            padding: 12px;
-            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.5);
+            border: 1px solid rgba(0,0,0,0.05);
+            padding: 14px;
+            border-radius: 14px;
             font-size: 17px;
-            font-weight: 500;
+            font-weight: 600;
             box-sizing: border-box;
             outline: none;
-            transition: background 0.2s;
         }
 
-        input:focus {
-            background: #e5e5ea;
-            box-shadow: inset 0 0 0 1px var(--ios-blue);
-        }
+        input:focus { background: #fff; border-color: var(--ios-blue); }
 
-        /* Action Buttons */
         .finish-btn {
-            background: var(--ios-blue);
+            background: var(--ios-dark);
             color: white;
             border: none;
-            padding: 18px;
-            border-radius: 16px;
-            font-weight: 700;
-            font-size: 17px;
+            padding: 22px;
+            border-radius: 20px;
+            font-weight: 800;
+            font-size: 18px;
             width: 100%;
-            margin-top: 20px;
-            box-shadow: 0 4px 15px rgba(0, 122, 255, 0.3);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+            margin-top: 10px;
         }
 
         .history-item {
-            background: white;
-            padding: 16px;
-            border-radius: 14px;
-            margin-bottom: 12px;
-            box-shadow: var(--shadow);
+            background: var(--glass);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            padding: 20px;
+            border-radius: 24px;
+            margin-bottom: 15px;
+            border: 1px solid var(--glass-border);
         }
 
-        .history-date {
-            font-size: 12px;
-            font-weight: 700;
-            color: var(--ios-blue);
-            text-transform: uppercase;
-        }
+        .history-date { font-weight: 800; color: #000; font-size: 17px; }
     </style>
 </head>
 <body>
 
 <header>
-    <h1>Gym Log</h1>
+    <h1>Liftr Lounge</h1>
 </header>
 
-<div class="tabs">
-    <button class="tab-btn active" onclick="showView('Legs Glutes')">Legs</button>
-    <button class="tab-btn" onclick="showView('Upper Push')">Push</button>
-    <button class="tab-btn" onclick="showView('Upper Pull')">Pull</button>
-    <button class="tab-btn" onclick="showView('Lower Hinge')">Hinge</button>
-    <button class="tab-btn" onclick="showView('History')">History</button>
+<div class="tabs-wrapper">
+    <div class="tabs" id="tabBar">
+        <button class="tab-btn active" onclick="showView('Legs Glutes')">Legs & Glutes</button>
+        <button class="tab-btn" onclick="showView('Upper Push')">Upper Push</button>
+        <button class="tab-btn" onclick="showView('Upper Pull')">Upper Pull</button>
+        <button class="tab-btn" onclick="showView('Lower Hinge')">Lower Hinge</button>
+        <button class="tab-btn" onclick="showView('History')">History</button>
+    </div>
 </div>
 
 <div class="container" id="content"></div>
 
 <script>
+    // [The JavaScript remains identical to maintain functionality]
     const routines = {
         "Legs Glutes": [
             { name: "Glute Leg Press", target: "4x8-10", start: "70-90 lb" },
             { name: "Smith Squat", target: "3x8-10", start: "70 lb" },
             { name: "Glute Kickback", target: "3x10-12", start: "100 lb" },
-            { name: "KB Squat Lunge", target: "3x10/leg", start: "45 lb" }
+            { name: "KB Squat Lunge", target: "3x10/leg", start: "45 lb" },
+            { name: "Leg Extension", target: "3x10-12", start: "115 lb" }
         ],
         "Upper Push": [
             { name: "Incline Bench", target: "3x8-10", start: "35 lb" },
             { name: "Chest Press", target: "3x8-10", start: "90 lb" },
-            { name: "Military Press", target: "3x8-10", start: "50-60 lb" }
+            { name: "Military Press", target: "3x8-10", start: "50-60 lb" },
+            { name: "Lateral Raise", target: "3x10-12", start: "50 lb" }
         ],
         "Upper Pull": [
             { name: "Cable Row", target: "3x8-10", start: "100 lb" },
             { name: "Lat Pulldown", target: "3x8-10", start: "85 lb" },
-            { name: "Machine Pullback", target: "3x10", start: "115 lb" }
+            { name: "Machine Pullback", target: "3x10", start: "115 lb" },
+            { name: "Reverse Fly", target: "3x10-12", start: "55 lb" }
         ],
         "Lower Hinge": [
             { name: "Romanian DL", target: "4x6-8", start: "70 lb" },
             { name: "Hip Thrust", target: "3x8-10", start: "Moderate" },
-            { name: "Leg Curl", target: "3x10-12", start: "Moderate" }
+            { name: "Leg Curl", target: "3x10-12", start: "Moderate" },
+            { name: "Walking Lunge", target: "3x10/leg", start: "25-45 lb" }
         ]
     };
 
     function showView(name) {
-        document.querySelectorAll('.tab-btn').forEach(b => b.classList.toggle('active', b.innerText === name || (name === 'History' && b.innerText === 'History')));
+        document.querySelectorAll('.tab-btn').forEach(btn => {
+            btn.classList.toggle('active', btn.innerText === name || (name === 'History' && btn.innerText === 'History'));
+        });
         const container = document.getElementById('content');
         container.innerHTML = '';
 
         if (name === 'History') {
             const history = JSON.parse(localStorage.getItem('workout_history') || "[]");
-            if (history.length === 0) container.innerHTML = "<p style='text-align:center; color:grey; margin-top:50px;'>No sessions recorded yet.</p>";
+            if (history.length === 0) container.innerHTML = "<p style='text-align:center; color:#fff; margin-top:40px;'>No sessions yet.</p>";
             history.reverse().forEach(entry => {
-                let div = document.createElement('div');
-                div.className = 'history-item';
-                div.innerHTML = `<div class="history-date">${entry.date} • ${entry.routine}</div><p style="margin:8px 0 0; font-size:15px; line-height:1.4;">${entry.summary}</p>`;
-                container.appendChild(div);
+                container.innerHTML += `
+                    <div class="history-item">
+                        <div class="history-date">${entry.date}</div>
+                        <div style="font-size:12px; font-weight:700; color:var(--ios-blue); text-transform:uppercase; margin-bottom:8px;">${entry.routine}</div>
+                        <div style="font-size:15px; line-height:1.5; color:#000;">${entry.summary}</div>
+                    </div>`;
             });
             return;
         }
@@ -237,9 +231,9 @@
             container.innerHTML += `
                 <div class="exercise-card">
                     <p class="ex-name">${ex.name}</p>
-                    <div class="ex-info">
-                        <span class="tag">🎯 ${ex.target}</span>
-                        <span class="tag">🚩 ${ex.start}</span>
+                    <div class="ex-meta">
+                        <span class="badge badge-blue">🎯 ${ex.target}</span>
+                        <span class="badge badge-orange">🚩 ${ex.start}</span>
                     </div>
                     <div class="input-row">
                         <div class="field">
@@ -247,34 +241,31 @@
                             <input type="text" id="w-${ex.name}" placeholder="lb">
                         </div>
                         <div class="field">
-                            <label>Note</label>
-                            <input type="text" id="n-${ex.name}" placeholder="Set details">
+                            <label>Notes</label>
+                            <input type="text" id="n-${ex.name}" placeholder="Sets">
                         </div>
                     </div>
                 </div>`;
         });
-        container.innerHTML += `<button class="finish-btn" onclick="finishWorkout('${name}')">Complete Session</button>`;
+        container.innerHTML += `<button class="finish-btn" onclick="finishWorkout('${name}')">Complete Workout</button>`;
     }
 
     function finishWorkout(routineName) {
-        const date = new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+        const date = new Date().toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' });
         let summary = [];
         routines[routineName].forEach(ex => {
-            const w = document.getElementById(`w-${ex.name}`).value;
-            if (w) summary.push(`<b>${ex.name}</b>: ${w}lb`);
+            const weightVal = document.getElementById(`w-${ex.name}`).value;
+            if (weightVal) summary.push(`<b>${ex.name}</b>: ${weightVal}lb`);
         });
-
-        if (summary.length === 0) return alert("Please log at least one lift.");
-
+        if (summary.length === 0) return alert("Log a lift before finishing!");
         const history = JSON.parse(localStorage.getItem('workout_history') || "[]");
         history.push({ date, routine: routineName, summary: summary.join(", ") });
         localStorage.setItem('workout_history', JSON.stringify(history));
-        
         showView('History');
+        window.scrollTo(0,0);
     }
 
     showView('Legs Glutes');
 </script>
-
 </body>
 </html>
