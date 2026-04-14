@@ -3,62 +3,156 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <link rel="manifest" href="manifest.json">
-    <title>Workout Tracker</title>
+    <title>Gym Tracker</title>
     <style>
-        :root { --bg: #f4f4f9; --card: #ffffff; --primary: #007aff; }
-        body { font-family: -apple-system, system-ui; background: var(--bg); margin: 0; padding: 20px; }
-        h2 { color: #333; }
-        .routine-select { display: flex; gap: 10px; margin-bottom: 20px; overflow-x: auto; padding-bottom: 10px; }
-        button { background: var(--primary); color: white; border: none; padding: 10px 15px; border-radius: 8px; font-weight: 600; cursor: pointer; white-space: nowrap; }
-        .card { background: var(--card); padding: 15px; border-radius: 12px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); margin-bottom: 10px; }
-        input { width: 60px; padding: 8px; border: 1px solid #ddd; border-radius: 5px; }
-        .done-btn { background: #4cd964; margin-left: 10px; }
+        :root { --bg: #f2f2f7; --card: #ffffff; --primary: #007aff; --text: #1c1c1e; --secondary-text: #8e8e93; --accent: #ff9500; }
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; background: var(--bg); margin: 0; color: var(--text); padding-bottom: 80px; }
+        header { padding: 50px 15px 10px; background: var(--card); border-bottom: 1px solid #d1d1d6; position: sticky; top: 0; z-index: 100; }
+        h1 { margin: 0; font-size: 24px; font-weight: 700; }
+        
+        .tabs { display: flex; overflow-x: auto; padding: 12px 15px; gap: 8px; background: var(--card); -webkit-overflow-scrolling: touch; border-bottom: 1px solid #d1d1d6; }
+        .tabs::-webkit-scrollbar { display: none; }
+        .tab-btn { background: #e5e5ea; border: none; padding: 8px 16px; border-radius: 20px; font-weight: 600; font-size: 14px; white-space: nowrap; color: #3a3a3c; }
+        .tab-btn.active { background: var(--primary); color: white; }
+
+        .container { padding: 15px; }
+        .exercise-card { background: var(--card); border-radius: 14px; padding: 16px; margin-bottom: 12px; box-shadow: 0 1px 4px rgba(0,0,0,0.08); }
+        .ex-header { margin-bottom: 12px; }
+        .ex-name { font-weight: 700; font-size: 18px; margin: 0 0 4px 0; }
+        .ex-info { display: flex; gap: 15px; font-size: 13px; font-weight: 500; }
+        .target-tag { color: var(--primary); }
+        .start-tag { color: var(--accent); }
+        
+        .input-row { display: flex; gap: 10px; align-items: flex-end; }
+        .input-group { flex: 1; }
+        label { font-size: 11px; font-weight: 700; color: var(--secondary-text); text-transform: uppercase; margin-bottom: 6px; display: block; }
+        input { width: 100%; border: 1.5px solid #e5e5ea; padding: 12px; border-radius: 10px; font-size: 16px; box-sizing: border-box; background: #f9f9f9; -webkit-appearance: none; }
+        input:focus { outline: none; border-color: var(--primary); background: #fff; }
+
+        .notes-area { width: 100%; margin-top: 10px; border: 1.5px solid #e5e5ea; border-radius: 10px; padding: 12px; font-size: 16px; box-sizing: border-box; height: 150px; background: #f9f9f9; }
+        .btn-save { background: #4cd964; color: white; border: none; padding: 14px; border-radius: 12px; font-weight: 700; width: 100%; margin-top: 20px; font-size: 16px; }
     </style>
 </head>
 <body>
 
-    <h2>Gym Log</h2>
-    <div class="routine-select" id="menu"></div>
-    <div id="exercise-list"></div>
+<header>
+    <h1>Gym Log</h1>
+</header>
 
-    <script>
-        const routines = {
-            "Legs Glutes": ["Leg Press", "Smith Squat", "Glute Kickback", "Leg Extension"],
-            "Upper Push": ["Incline Bench", "Chest Press", "Military Press", "Lateral Raise"],
-            "Upper Pull": ["Cable Row", "Lat Pulldown", "Preacher Curl", "Hammer Curl"]
-        };
+<div class="tabs" id="tabBar">
+    <button class="tab-btn active" onclick="showRoutine('Legs Glutes')">Legs Glutes</button>
+    <button class="tab-btn" onclick="showRoutine('Upper Push')">Upper Push</button>
+    <button class="tab-btn" onclick="showRoutine('Upper Pull')">Upper Pull</button>
+    <button class="tab-btn" onclick="showRoutine('Lower Hinge')">Lower Hinge</button>
+    <button class="tab-btn" onclick="showRoutine('Progress')">Notes</button>
+</div>
 
-        const menu = document.getElementById('menu');
-        const list = document.getElementById('exercise-list');
+<div class="container" id="content"></div>
 
-        Object.keys(routines).forEach(name => {
-            let btn = document.createElement('button');
-            btn.innerText = name;
-            btn.onclick = () => loadRoutine(name);
-            menu.appendChild(btn);
+<script>
+    const routines = {
+        "Legs Glutes": [
+            { name: "Glute Leg Press", target: "4 x 8-10", start: "70-90 lb" },
+            { name: "Smith Squat", target: "3 x 8-10", start: "70 lb" },
+            { name: "Glute Kickback", target: "3 x 10-12", start: "100 lb" },
+            { name: "KB Squat Lunge", target: "3 x 10/leg", start: "45 lb" },
+            { name: "Leg Extension", target: "3 x 10-12", start: "115 lb" },
+            { name: "Crunches", target: "3 x 20-30", start: "BW" },
+            { name: "Mountain Climbers", target: "3 x 30s", start: "BW" }
+        ],
+        "Upper Push": [
+            { name: "Incline Bench", target: "3 x 8-10", start: "35 lb" },
+            { name: "Chest Press", target: "3 x 8-10", start: "90 lb" },
+            { name: "Military Press", target: "3 x 8-10", start: "50-60 lb" },
+            { name: "Lateral Raise", target: "3 x 10-12", start: "50 lb" },
+            { name: "Pec Deck / Fly", target: "3 x 10-12", start: "20-25 lb" },
+            { name: "Tricep Pushdown", target: "3 x 10-12", start: "88-90 lb" },
+            { name: "Face Pulls", target: "2-3 x 12-15", start: "Light" }
+        ],
+        "Upper Pull": [
+            { name: "Cable Row", target: "3 x 8-10", start: "100 lb" },
+            { name: "Lat Pulldown", target: "3 x 8-10", start: "85 lb" },
+            { name: "Machine Pullback", target: "3 x 10", start: "115 lb" },
+            { name: "Reverse Fly", target: "3 x 10-12", start: "55 lb" },
+            { name: "Back Extension", target: "2-3 x 12", start: "BW/Light" },
+            { name: "Preacher Curl", target: "3 x 10", start: "30-50 lb" },
+            { name: "Hammer Curl", target: "3 x 10", start: "25 lb" }
+        ],
+        "Lower Hinge": [
+            { name: "Romanian DL", target: "4 x 6-8", start: "70 lb" },
+            { name: "Hip Thrust", target: "3 x 8-10", start: "Moderate" },
+            { name: "Leg Curl", target: "3 x 10-12", start: "Moderate" },
+            { name: "Walking Lunge", target: "3 x 10/leg", start: "25-45 lb" },
+            { name: "Calf Raise", target: "3 x 12-15", start: "Moderate" },
+            { name: "Plank / Ab Wheel", target: "3 sets", start: "BW" }
+        ]
+    };
+
+    function showRoutine(name) {
+        document.querySelectorAll('.tab-btn').forEach(btn => {
+            btn.classList.toggle('active', btn.innerText === name || (name === 'Progress' && btn.innerText === 'Notes'));
         });
 
-        function loadRoutine(name) {
-            list.innerHTML = `<h3>${name}</h3>`;
-            routines[name].forEach(ex => {
-                const saved = localStorage.getItem(ex) || "";
-                let div = document.createElement('div');
-                div.className = 'card';
-                div.innerHTML = `
-                    <strong>${ex}</strong><br>
-                    <input type="number" id="input-${ex}" value="${saved}" placeholder="lb">
-                    <button class="done-btn" onclick="save('${ex}')">✅</button>
-                `;
-                list.appendChild(div);
-            });
+        const container = document.getElementById('content');
+        container.innerHTML = '';
+
+        if (name === 'Progress') {
+            const savedNotes = localStorage.getItem('workout_notes') || "";
+            container.innerHTML = `
+                <div class="exercise-card">
+                    <p class="ex-name">Daily Progress Note</p>
+                    <p style="font-size: 13px; color: #666; margin-bottom:10px;">How did today feel? Any changes for next time?</p>
+                    <textarea class="notes-area" id="notes-input" placeholder="Energy level, strength, etc...">${savedNotes}</textarea>
+                    <button class="btn-save" onclick="saveNotes()">Save Note</button>
+                </div>
+            `;
+            return;
         }
 
-        function save(ex) {
-            const val = document.getElementById(`input-${ex}`).value;
-            localStorage.setItem(ex, val);
-            alert("Saved!");
-        }
-    </script>
+        routines[name].forEach(ex => {
+            const savedWeight = localStorage.getItem(`${ex.name}_weight`) || "";
+            const savedNotes = localStorage.getItem(`${ex.name}_notes`) || "";
+            
+            const card = document.createElement('div');
+            card.className = 'exercise-card';
+            card.innerHTML = `
+                <div class="ex-header">
+                    <p class="ex-name">${ex.name}</p>
+                    <div class="ex-info">
+                        <span class="target-tag">Target: ${ex.target}</span>
+                        <span class="start-tag">Goal: ${ex.start}</span>
+                    </div>
+                </div>
+                <div class="input-row">
+                    <div class="input-group">
+                        <label>Today's Weight</label>
+                        <input type="text" value="${savedWeight}" oninput="saveData('${ex.name}', 'weight', this.value)" placeholder="--">
+                    </div>
+                    <div class="input-group">
+                        <label>Quick Note</label>
+                        <input type="text" value="${savedNotes}" oninput="saveData('${ex.name}', 'notes', this.value)" placeholder="Felt good">
+                    </div>
+                </div>
+            `;
+            container.appendChild(card);
+        });
+    }
+
+    function saveData(exercise, type, value) {
+        localStorage.setItem(`${exercise}_${type}`, value);
+    }
+
+    function saveNotes() {
+        const val = document.getElementById('notes-input').value;
+        localStorage.setItem('workout_notes', val);
+        alert("Notes saved!");
+    }
+
+    showRoutine('Legs Glutes');
+</script>
+
 </body>
 </html>
