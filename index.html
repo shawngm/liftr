@@ -7,94 +7,93 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <title>Liftr Lounge</title>
     <link rel="apple-touch-icon" href="icon.png">
-    <link rel="manifest" href="manifest.json">
-
+    
     <style>
         :root {
             --glass: rgba(255, 255, 255, 0.88);
-            --glass-dark: rgba(255, 255, 255, 0.96);
-            --glass-border: rgba(255, 255, 255, 0.4);
             --ios-blue: #007aff;
             --ios-dark: #1c1c1e;
-            --ios-green: #34c759;
         }
 
         body {
             font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", sans-serif;
             margin: 0; padding: 0; min-height: 100vh;
-            background: url('https://images.unsplash.com/photo-1514241516423-6c0a5e031aa2?q=80&w=687&auto=format&fit=crop') no-repeat center center fixed;
-            background-size: cover;
+            background-size: cover; background-position: center; background-attachment: fixed;
+            transition: background 1s ease-in-out;
             -webkit-font-smoothing: antialiased;
+            color: #fff;
         }
 
-        /* HEADER & NAVIGATION */
-        .header-nav-container {
+        /* THEME OVERLAY */
+        .overlay-dim { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.3); z-index: -1; }
+
+        .header-nav {
             position: sticky; top: 0; z-index: 1000;
-            background: rgba(0, 0, 0, 0.6);
-            backdrop-filter: blur(30px); -webkit-backdrop-filter: blur(30px);
-            border-bottom: 0.5px solid rgba(255,255,255,0.15);
-            padding-top: env(safe-area-inset-top, 50px);
+            background: rgba(0, 0, 0, 0.7); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+            padding-top: env(safe-area-inset-top, 40px);
+            border-bottom: 0.5px solid rgba(255,255,255,0.1);
         }
 
-        .main-headline {
-            padding: 10px 25px 5px; margin: 0;
-            font-size: 34px; font-weight: 800; letter-spacing: -1.2px;
-            color: #ffffff; text-shadow: 0 2px 10px rgba(0,0,0,0.4);
-        }
+        .logo-container { padding: 15px 20px 5px; text-align: center; }
+        .app-logo { height: 40px; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5)); }
 
-        .tabs { display: flex; overflow-x: auto; padding: 15px 20px; gap: 10px; -webkit-overflow-scrolling: touch; }
+        .tabs { display: flex; overflow-x: auto; padding: 15px 20px; gap: 10px; }
         .tabs::-webkit-scrollbar { display: none; }
         .tab-btn {
-            border: none; background: rgba(255, 255, 255, 0.12);
+            border: none; background: rgba(255, 255, 255, 0.15);
             padding: 10px 18px; font-size: 13px; font-weight: 700;
-            border-radius: 20px; color: rgba(255, 255, 255, 0.8); white-space: nowrap; transition: 0.3s;
+            border-radius: 20px; color: #fff; white-space: nowrap; transition: 0.3s;
         }
-        .tab-btn.active { background: #fff; color: #000; box-shadow: 0 4px 15px rgba(0,0,0,0.4); transform: scale(1.05); }
+        .tab-btn.active { background: #fff; color: #000; transform: scale(1.05); }
 
         .container { padding: 20px 20px 120px; }
 
-        /* LOUNGE DASHBOARD UI */
-        .welcome-section { padding: 10px 0 30px; text-align: left; }
-        .welcome-section p { color: rgba(255,255,255,0.9); font-size: 16px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; margin: 0 0 10px; }
-        .vibe-text { font-size: 28px; font-weight: 800; color: #fff; margin: 0 0 25px; text-shadow: 0 2px 10px rgba(0,0,0,0.3); }
+        /* VIBE CARD */
+        .vibe-card {
+            background: var(--glass); border-radius: 28px; padding: 25px; margin-bottom: 25px;
+            color: #000; box-shadow: 0 15px 35px rgba(0,0,0,0.3); backdrop-filter: blur(10px);
+        }
+        .vibe-label { font-size: 10px; font-weight: 900; color: var(--ios-blue); text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 10px; }
+        .quote { font-size: 18px; font-weight: 700; font-style: italic; line-height: 1.4; margin-bottom: 15px; }
+        .spotify-link {
+            display: inline-flex; align-items: center; gap: 8px; background: #1DB954; color: #fff;
+            text-decoration: none; padding: 10px 20px; border-radius: 25px; font-weight: 800; font-size: 13px;
+        }
 
-        .streak-dots { display: flex; gap: 8px; margin-bottom: 30px; background: rgba(0,0,0,0.3); padding: 15px; border-radius: 18px; backdrop-filter: blur(10px); }
-        .dot { width: 12px; height: 12px; border-radius: 50%; background: rgba(255,255,255,0.2); }
-        .dot.active { background: var(--ios-green); box-shadow: 0 0 10px var(--ios-green); }
-
+        /* GRID */
         .home-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
         .shortcut-card {
-            background: var(--glass); padding: 22px 15px; border-radius: 24px;
-            text-align: left; color: var(--ios-dark); border: 1px solid var(--glass-border);
-            backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
-            box-shadow: 0 8px 24px rgba(0,0,0,0.2); position: relative;
+            background: var(--glass); padding: 25px 15px; border-radius: 24px;
+            color: #000; text-align: center; font-weight: 800; border: 1px solid rgba(255,255,255,0.5);
         }
-        .shortcut-card.priority { border: 2px solid var(--ios-blue); }
-        .priority-badge { position: absolute; top: -10px; right: 10px; background: var(--ios-blue); color: white; font-size: 9px; padding: 4px 8px; border-radius: 10px; font-weight: 900; }
-        
-        .shortcut-card h3 { margin: 8px 0 0; font-size: 16px; font-weight: 800; line-height: 1.2; }
-        .last-date { font-size: 9px; font-weight: 800; color: var(--ios-blue); text-transform: uppercase; letter-spacing: 0.5px; }
 
-        /* CARDS & INPUTS */
-        .exercise-card { background: var(--glass-dark); border-radius: 24px; padding: 22px; margin-bottom: 20px; box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2); border: 1px solid var(--glass-border); }
-        .ex-name { font-size: 19px; font-weight: 800; color: #000; margin: 0; line-height: 1.2; }
-        .badge { font-size: 10px; font-weight: 800; padding: 5px 10px; border-radius: 8px; text-transform: uppercase; margin-right: 5px; margin-top: 8px; display: inline-block; }
-        .badge-blue { background: rgba(0, 122, 255, 0.1); color: var(--ios-blue); }
-        .badge-orange { background: rgba(255, 149, 0, 0.1); color: #c67100; }
+        /* EXERCISE CARDS */
+        .exercise-card { background: #fff; border-radius: 24px; padding: 20px; margin-bottom: 15px; color: #000; }
+        .ex-header { font-size: 18px; font-weight: 800; margin-bottom: 15px; }
+        .input-group { display: flex; gap: 10px; }
+        input { flex: 1; background: #f2f2f7; border: none; padding: 12px; border-radius: 12px; font-size: 16px; font-weight: 600; }
 
-        .input-row { display: flex; gap: 12px; margin-top: 18px; }
-        .field { flex: 1; }
-        label { font-size: 10px; font-weight: 800; color: #666; text-transform: uppercase; margin-bottom: 6px; display: block; }
-        input { width: 100%; background: #f2f2f7; border: none; padding: 14px; border-radius: 12px; font-size: 17px; font-weight: 600; box-sizing: border-box; }
+        .finish-btn { background: #000; color: #fff; border: none; padding: 20px; border-radius: 20px; font-weight: 800; font-size: 18px; width: 100%; margin-top: 20px; }
 
-        .finish-btn { background: #000; color: #fff; border: none; padding: 22px; border-radius: 20px; font-weight: 800; font-size: 18px; width: 100%; margin-top: 10px; box-shadow: 0 10px 25px rgba(0,0,0,0.4); }
-        .history-item { background: var(--glass-dark); padding: 22px; border-radius: 24px; margin-bottom: 15px; border: 1px solid var(--glass-border); }
+        /* VICTORY OVERLAY */
+        #victoryOverlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.9); z-index: 2000; display: none;
+            flex-direction: column; align-items: center; justify-content: center; text-align: center;
+        }
+        #victoryBadge { width: 80%; max-width: 300px; margin-bottom: 20px; transform: scale(0.5); transition: 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+
+        .history-card { background: var(--glass); padding: 20px; border-radius: 20px; margin-bottom: 15px; color: #000; }
     </style>
 </head>
 <body>
 
-<div class="header-nav-container">
-    <h1 class="main-headline">Liftr Lounge</h1>
+<div class="overlay-dim"></div>
+
+<div class="header-nav">
+    <div class="logo-container">
+        <img src="logo.png" class="app-logo" alt="Liftr Lounge">
+    </div>
     <div class="tabs" id="tabBar">
         <button class="tab-btn active" onclick="showView('Home')">Lounge</button>
         <button class="tab-btn" onclick="showView('Chest & Shoulders')">Chest</button>
@@ -107,7 +106,21 @@
 
 <div class="container" id="content"></div>
 
+<div id="victoryOverlay">
+    <img src="" id="victoryBadge" alt="Badge">
+    <h1 style="color:gold;">SESSION CRUSHED</h1>
+    <p style="color:#fff;">Strength built. Mind centered.</p>
+</div>
+
 <script>
+    const themes = {
+        1: { name: "80s Arena Rock", bg: "bg1.jpg", badge: "badge1.png", playlist: "https://open.spotify.com/playlist/17BNbtuYjcjLjKF1mMXKpx?si=ba92dcfce1f749f5", quote: "“What stands in the way becomes the way.” — Marcus Aurelius" },
+        2: { name: "Vaporwave / Lo-Fi", bg: "bg2.jpg", badge: "badge2.png", playlist: "https://open.spotify.com/playlist/4AH6HqwasXyLwaeDLvaHFv?si=45c9f9d9c7284810", quote: "“For God hath not given us the spirit of fear; but of power, and of love, and of a sound mind.” — 2 Timothy 1:7" },
+        3: { name: "Heavenly Strength", bg: "bg3.jpg", badge: "badge3.png", playlist: "https://open.spotify.com/playlist/7CSCzfrGrTT1j1ie3n3HOf?si=41c6d0ac9b9347fe", quote: "\"God arms me with strength, and he makes my way perfect\" - Psalm 18:32" },
+        4: { name: "Industrial Tech", bg: "bg4.jpg", badge: "badge4.png", playlist: "https://open.spotify.com/playlist/0z9tGa8xlumLE8NshMKQBH?si=2e3b0382697a43bf", quote: "“No man is free who is not master of himself.” — Epictetus" },
+        5: { name: "Moody Nature / Zen", bg: "bg5.jpg", badge: "badge5.png", playlist: "https://open.spotify.com/playlist/0z9tGa8xlumLE8NshMKQBH?si=2e3b0382697a43bf", quote: "\"No discipline is enjoyable while it is happening—it’s painful! But afterward there will be a peaceful harvest...\" - Hebrews 12:11" }
+    };
+
     const routines = {
         "Chest & Shoulders": [
             { name: "Incline Bench Press", target: "3x10", start: "35 lbs" },
@@ -124,120 +137,64 @@
             { name: "Shoulder Press", target: "3x10", start: "60 lbs" }
         ],
         "Legs & Glutes": [
-            { name: "Leg Press", target: "3x10", start: "4x45 lbs" },
-            { name: "Glute-Focused Press", target: "2x8", start: "70-90 lbs" },
+            { name: "Leg Press", target: "4x10", start: "4x45 lbs" },
             { name: "Rear Kick Machine", target: "4x10", start: "100 lbs" },
             { name: "Squat", target: "3x10", start: "70 lbs" },
             { name: "Leg Extensions", target: "3x10", start: "115 lbs" },
-            { name: "Kettlebell Squat Lunges", target: "3x10", start: "45 lbs" },
-            { name: "Crunches", target: "3x30", start: "Bodyweight" },
-            { name: "Mountain Climbers", target: "3x30 sec", start: "Bodyweight" },
-            { name: "Stairs", target: "15-20 min", start: "Bodyweight" }
+            { name: "Stairs", target: "15-20 min", start: "Level 6-8" }
         ],
         "Arms": [
             { name: "Zottman Curls", target: "3x8", start: "25 lbs" },
             { name: "Incline Dumbbell Curl", target: "3x8", start: "30 lbs" },
             { name: "Hammer Curl", target: "3x10", start: "25 lbs" },
             { name: "Tricep Machine", target: "3x10", start: "90 lbs" },
-            { name: "Cable Rope Pulldown (A)", target: "3x8", start: "100 lbs" },
-            { name: "Cable Rope Pulldown (B)", target: "3x10", start: "88 lbs" },
+            { name: "Cable Rope Pulldown", target: "3x10", start: "100 lbs" },
             { name: "Preacher Curl Machine", target: "3x8", start: "50 lbs" }
         ],
         "Back/Shoulders/Core": [
             { name: "Cable Row", target: "3 Sets", start: "100 lbs" },
             { name: "Reverse Machine", target: "3 Sets", start: "55 lbs" },
-            { name: "Stairs", target: "15 min", start: "Bodyweight" },
-            { name: "Lying Pulldown / Pullback", target: "3 Sets", start: "115 lbs" },
-            { name: "Dorsi Flexor Machine", target: "3 Sets", start: "135 lbs" },
             { name: "Lat Pulldown Bar", target: "3 Sets", start: "85 lbs" },
-            { name: "Lateral Raise 504", target: "3 Sets", start: "50 lbs" },
-            { name: "Lower Back Lift", target: "3 Sets", start: "--" },
-            { name: "Shoulder Press", target: "3 Sets", start: "60 lbs" }
+            { name: "Dorsi Flexor Machine", target: "3 Sets", start: "135 lbs" },
+            { name: "Crunches", target: "3 Sets", start: "Body" }
         ]
     };
 
-    function getLastDone(routineName) {
-        const history = JSON.parse(localStorage.getItem('workout_history') || "[]");
-        const last = history.slice().reverse().find(entry => entry.routine === routineName);
-        return last ? last.date : "Not started";
-    }
-
-    function getVibe() {
-        const hr = new Date().getHours();
-        if (hr < 12) return "Coffee & Iron?";
-        if (hr < 17) return "Mid-day crush?";
-        return "After-hours grind?";
-    }
-
-    function getStreakHTML() {
-        const history = JSON.parse(localStorage.getItem('workout_history') || "[]");
-        const last7Days = [...Array(7)].map((_, i) => {
-            const d = new Date();
-            d.setDate(d.getDate() - i);
-            const dateString = d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
-            const found = history.some(entry => entry.date.includes(dateString));
-            return `<div class="dot ${found ? 'active' : ''}"></div>`;
-        }).reverse().join('');
-        return last7Days;
+    function getTheme() {
+        const start = new Date('2026-01-01');
+        const diff = Math.floor((new Date() - start) / (1000*60*60*24));
+        return themes[(diff % 5) + 1];
     }
 
     function showView(name) {
-        document.querySelectorAll('.tab-btn').forEach(btn => {
-            const btnText = btn.innerText.toLowerCase();
-            const searchName = name.toLowerCase();
-            let isActive = false;
-            if (searchName === 'home' && btnText === 'lounge') isActive = true;
-            else if (searchName === 'history' && btnText === 'history') isActive = true;
-            else if (searchName.includes(btnText)) isActive = true;
-            btn.classList.toggle('active', isActive);
-        });
-
+        const theme = getTheme();
+        document.body.style.backgroundImage = `url('${theme.bg}')`;
+        
+        document.querySelectorAll('.tab-btn').forEach(b => b.classList.toggle('active', b.innerText === name || (name==='Home' && b.innerText==='Lounge')));
         const container = document.getElementById('content');
         container.innerHTML = '';
 
         if (name === 'Home') {
-            // Priority logic (oldest workout first)
-            const keys = Object.keys(routines);
-            let oldestKey = keys[0];
-            let oldestTime = Date.now();
-            
-            keys.forEach(k => {
-                const history = JSON.parse(localStorage.getItem('workout_history') || "[]");
-                const last = history.slice().reverse().find(e => e.routine === k);
-                const time = last ? new Date(last.date + ", " + new Date().getFullYear()).getTime() : 0;
-                if (time < oldestTime) { oldestTime = time; oldestKey = k; }
-            });
-
             container.innerHTML = `
-                <div class="welcome-section">
-                    <p>Current Vibe</p>
-                    <div class="vibe-text">${getVibe()}</div>
-                    <div style="font-size:11px; font-weight:800; color:#fff; text-transform:uppercase; margin-bottom:10px;">Activity • Last 7 Days</div>
-                    <div class="streak-dots">${getStreakHTML()}</div>
-                    <div class="home-grid">
-                        ${keys.map(k => `
-                            <div class="shortcut-card ${k === oldestKey ? 'priority' : ''}" onclick="showView('${k}')">
-                                ${k === oldestKey ? '<div class="priority-badge">NEXT UP</div>' : ''}
-                                <div class="last-date">${getLastDone(k)}</div>
-                                <h3>${k.split(' ')[0]}</h3>
-                            </div>
-                        `).join('')}
-                    </div>
+                <div class="vibe-card">
+                    <div class="vibe-label">Today's Vibe: ${theme.name}</div>
+                    <div class="quote">${theme.quote}</div>
+                    <a href="${theme.playlist}" class="spotify-link">▶ Open Vibe Playlist</a>
+                </div>
+                <div class="home-grid">
+                    <div class="shortcut-card" onclick="showView('Chest & Shoulders')">CHEST</div>
+                    <div class="shortcut-card" onclick="showView('Legs & Glutes')">LEGS</div>
+                    <div class="shortcut-card" onclick="showView('Arms')">ARMS</div>
+                    <div class="shortcut-card" onclick="showView('Back/Shoulders/Core')">BACK</div>
                 </div>
             `;
             return;
         }
 
         if (name === 'History') {
-            const history = JSON.parse(localStorage.getItem('workout_history') || "[]");
-            if (history.length === 0) container.innerHTML = "<p style='text-align:center; color:#fff; margin-top:50px;'>No sessions logged yet.</p>";
-            history.slice().reverse().forEach(entry => {
-                container.innerHTML += `
-                    <div class="history-item">
-                        <div style="font-weight:800; color:#000; font-size:17px;">${entry.date}</div>
-                        <div style="font-size:11px; font-weight:700; color:var(--ios-blue); text-transform:uppercase; margin-bottom:8px; letter-spacing:1px;">${entry.routine}</div>
-                        <div style="font-size:15px; color:#333; line-height:1.5;">${entry.summary}</div>
-                    </div>`;
+            const hist = JSON.parse(localStorage.getItem('liftr_history') || "[]");
+            hist.slice().reverse().forEach(e => {
+                container.innerHTML += `<div class="history-card"><strong>${e.date}</strong><br><small>${e.routine}</small><br>${e.summary}</div>`;
             });
             return;
         }
@@ -245,30 +202,40 @@
         routines[name].forEach(ex => {
             container.innerHTML += `
                 <div class="exercise-card">
-                    <p class="ex-name">${ex.name}</p>
-                    <div><span class="badge badge-blue">🎯 ${ex.target}</span><span class="badge badge-orange">🚩 ${ex.start}</span></div>
-                    <div class="input-row">
-                        <div class="field"><label>Weight</label><input type="text" id="w-${ex.name}" placeholder="lb"></div>
-                        <div class="field"><label>Notes</label><input type="text" id="n-${ex.name}" placeholder="Sets/Reps"></div>
+                    <div class="ex-header">${ex.name} <span style="font-size:11px; opacity:0.6;">(${ex.target})</span></div>
+                    <div class="input-group">
+                        <input type="text" placeholder="Lbs" id="w-${ex.name}">
+                        <input type="text" placeholder="Notes" id="n-${ex.name}">
                     </div>
                 </div>`;
         });
-        container.innerHTML += `<button class="finish-btn" onclick="finishWorkout('${name}')">Complete Session</button>`;
-        window.scrollTo(0,0);
+        container.innerHTML += `<button class="finish-btn" onclick="finish('${name}')">Complete Session</button>`;
     }
 
-    function finishWorkout(routineName) {
-        const date = new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+    function finish(routine) {
+        const theme = getTheme();
         let summary = [];
-        routines[routineName].forEach(ex => {
-            const val = document.getElementById(`w-${ex.name}`).value;
-            if (val) summary.push(`<b>${ex.name}</b>: ${val}lb`);
+        routines[routine].forEach(ex => {
+            const w = document.getElementById(`w-${ex.name}`).value;
+            if(w) summary.push(`${ex.name}: ${w}lb`);
         });
-        if (summary.length === 0) return alert("Log a lift first!");
-        const history = JSON.parse(localStorage.getItem('workout_history') || "[]");
-        history.push({ date, routine: routineName, summary: summary.join(", ") });
-        localStorage.setItem('workout_history', JSON.stringify(history));
-        showView('History');
+
+        const history = JSON.parse(localStorage.getItem('liftr_history') || "[]");
+        history.push({ date: new Date().toLocaleDateString(), routine, summary: summary.join(", ") });
+        localStorage.setItem('liftr_history', JSON.stringify(history));
+
+        // SHOW VICTORY
+        const overlay = document.getElementById('victoryOverlay');
+        const badge = document.getElementById('victoryBadge');
+        badge.src = theme.badge;
+        overlay.style.display = 'flex';
+        setTimeout(() => badge.style.transform = 'scale(1)', 100);
+
+        setTimeout(() => {
+            overlay.style.display = 'none';
+            badge.style.transform = 'scale(0.5)';
+            showView('History');
+        }, 3000);
     }
 
     showView('Home');
