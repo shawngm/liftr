@@ -6,7 +6,6 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <title>Liftr Lounge</title>
-    
     <link rel="apple-touch-icon" href="icon.png">
     <link rel="manifest" href="manifest.json">
 
@@ -17,6 +16,7 @@
             --glass-border: rgba(255, 255, 255, 0.4);
             --ios-blue: #007aff;
             --ios-dark: #1c1c1e;
+            --ios-green: #34c759;
         }
 
         body {
@@ -27,76 +27,56 @@
             -webkit-font-smoothing: antialiased;
         }
 
-        /* HEADER & NAVIGATION BLOCK */
+        /* HEADER & NAVIGATION */
         .header-nav-container {
-            position: sticky;
-            top: 0;
-            z-index: 1000;
+            position: sticky; top: 0; z-index: 1000;
             background: rgba(0, 0, 0, 0.6);
-            backdrop-filter: blur(30px);
-            -webkit-backdrop-filter: blur(30px);
+            backdrop-filter: blur(30px); -webkit-backdrop-filter: blur(30px);
             border-bottom: 0.5px solid rgba(255,255,255,0.15);
-            /* Enhanced Notch/Dynamic Island Protection */
             padding-top: env(safe-area-inset-top, 50px);
         }
 
         .main-headline {
-            padding: 10px 25px 5px;
-            margin: 0;
-            font-size: 34px;
-            font-weight: 800;
-            letter-spacing: -1.2px;
-            color: #ffffff;
-            text-shadow: 0 2px 10px rgba(0,0,0,0.4);
+            padding: 10px 25px 5px; margin: 0;
+            font-size: 34px; font-weight: 800; letter-spacing: -1.2px;
+            color: #ffffff; text-shadow: 0 2px 10px rgba(0,0,0,0.4);
         }
 
-        .tabs { 
-            display: flex; 
-            overflow-x: auto; 
-            padding: 15px 20px; 
-            gap: 10px; 
-            -webkit-overflow-scrolling: touch; 
-        }
+        .tabs { display: flex; overflow-x: auto; padding: 15px 20px; gap: 10px; -webkit-overflow-scrolling: touch; }
         .tabs::-webkit-scrollbar { display: none; }
-
         .tab-btn {
             border: none; background: rgba(255, 255, 255, 0.12);
             padding: 10px 18px; font-size: 13px; font-weight: 700;
             border-radius: 20px; color: rgba(255, 255, 255, 0.8); white-space: nowrap; transition: 0.3s;
         }
-
-        .tab-btn.active { 
-            background: #fff; 
-            color: #000; 
-            box-shadow: 0 4px 15px rgba(0,0,0,0.4); 
-            transform: scale(1.05);
-        }
+        .tab-btn.active { background: #fff; color: #000; box-shadow: 0 4px 15px rgba(0,0,0,0.4); transform: scale(1.05); }
 
         .container { padding: 20px 20px 120px; }
 
-        /* Lounge Dashboard */
-        .welcome-section { padding: 10px 0 30px; text-align: center; }
-        .welcome-section p { color: rgba(255,255,255,0.9); font-size: 18px; font-weight: 500; margin-bottom: 25px; }
+        /* LOUNGE DASHBOARD UI */
+        .welcome-section { padding: 10px 0 30px; text-align: left; }
+        .welcome-section p { color: rgba(255,255,255,0.9); font-size: 16px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; margin: 0 0 10px; }
+        .vibe-text { font-size: 28px; font-weight: 800; color: #fff; margin: 0 0 25px; text-shadow: 0 2px 10px rgba(0,0,0,0.3); }
+
+        .streak-dots { display: flex; gap: 8px; margin-bottom: 30px; background: rgba(0,0,0,0.3); padding: 15px; border-radius: 18px; backdrop-filter: blur(10px); }
+        .dot { width: 12px; height: 12px; border-radius: 50%; background: rgba(255,255,255,0.2); }
+        .dot.active { background: var(--ios-green); box-shadow: 0 0 10px var(--ios-green); }
 
         .home-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
-
         .shortcut-card {
-            background: var(--glass); padding: 22px 10px; border-radius: 24px;
-            text-align: center; color: var(--ios-dark); border: 1px solid var(--glass-border);
+            background: var(--glass); padding: 22px 15px; border-radius: 24px;
+            text-align: left; color: var(--ios-dark); border: 1px solid var(--glass-border);
             backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
-            box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+            box-shadow: 0 8px 24px rgba(0,0,0,0.2); position: relative;
         }
-
+        .shortcut-card.priority { border: 2px solid var(--ios-blue); }
+        .priority-badge { position: absolute; top: -10px; right: 10px; background: var(--ios-blue); color: white; font-size: 9px; padding: 4px 8px; border-radius: 10px; font-weight: 900; }
+        
         .shortcut-card h3 { margin: 8px 0 0; font-size: 16px; font-weight: 800; line-height: 1.2; }
         .last-date { font-size: 9px; font-weight: 800; color: var(--ios-blue); text-transform: uppercase; letter-spacing: 0.5px; }
 
-        /* Exercise Cards */
-        .exercise-card { 
-            background: var(--glass-dark); 
-            border-radius: 24px; padding: 22px; margin-bottom: 20px; 
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2); 
-            border: 1px solid var(--glass-border);
-        }
+        /* CARDS & INPUTS */
+        .exercise-card { background: var(--glass-dark); border-radius: 24px; padding: 22px; margin-bottom: 20px; box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2); border: 1px solid var(--glass-border); }
         .ex-name { font-size: 19px; font-weight: 800; color: #000; margin: 0; line-height: 1.2; }
         .badge { font-size: 10px; font-weight: 800; padding: 5px 10px; border-radius: 8px; text-transform: uppercase; margin-right: 5px; margin-top: 8px; display: inline-block; }
         .badge-blue { background: rgba(0, 122, 255, 0.1); color: var(--ios-blue); }
@@ -108,7 +88,6 @@
         input { width: 100%; background: #f2f2f7; border: none; padding: 14px; border-radius: 12px; font-size: 17px; font-weight: 600; box-sizing: border-box; }
 
         .finish-btn { background: #000; color: #fff; border: none; padding: 22px; border-radius: 20px; font-weight: 800; font-size: 18px; width: 100%; margin-top: 10px; box-shadow: 0 10px 25px rgba(0,0,0,0.4); }
-
         .history-item { background: var(--glass-dark); padding: 22px; border-radius: 24px; margin-bottom: 15px; border: 1px solid var(--glass-border); }
     </style>
 </head>
@@ -183,20 +162,33 @@
         return last ? last.date : "Not started";
     }
 
+    function getVibe() {
+        const hr = new Date().getHours();
+        if (hr < 12) return "Coffee & Iron?";
+        if (hr < 17) return "Mid-day crush?";
+        return "After-hours grind?";
+    }
+
+    function getStreakHTML() {
+        const history = JSON.parse(localStorage.getItem('workout_history') || "[]");
+        const last7Days = [...Array(7)].map((_, i) => {
+            const d = new Date();
+            d.setDate(d.getDate() - i);
+            const dateString = d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+            const found = history.some(entry => entry.date.includes(dateString));
+            return `<div class="dot ${found ? 'active' : ''}"></div>`;
+        }).reverse().join('');
+        return last7Days;
+    }
+
     function showView(name) {
-        // Updated Tab Highlight Logic
         document.querySelectorAll('.tab-btn').forEach(btn => {
             const btnText = btn.innerText.toLowerCase();
             const searchName = name.toLowerCase();
             let isActive = false;
-            
             if (searchName === 'home' && btnText === 'lounge') isActive = true;
             else if (searchName === 'history' && btnText === 'history') isActive = true;
             else if (searchName.includes(btnText)) isActive = true;
-            else if (btnText === 'chest' && searchName.includes('chest')) isActive = true;
-            else if (btnText === 'legs' && searchName.includes('legs')) isActive = true;
-            else if (btnText === 'back' && searchName.includes('back')) isActive = true;
-            
             btn.classList.toggle('active', isActive);
         });
 
@@ -204,26 +196,32 @@
         container.innerHTML = '';
 
         if (name === 'Home') {
+            // Priority logic (oldest workout first)
+            const keys = Object.keys(routines);
+            let oldestKey = keys[0];
+            let oldestTime = Date.now();
+            
+            keys.forEach(k => {
+                const history = JSON.parse(localStorage.getItem('workout_history') || "[]");
+                const last = history.slice().reverse().find(e => e.routine === k);
+                const time = last ? new Date(last.date + ", " + new Date().getFullYear()).getTime() : 0;
+                if (time < oldestTime) { oldestTime = time; oldestKey = k; }
+            });
+
             container.innerHTML = `
                 <div class="welcome-section">
-                    <p>Select your session</p>
+                    <p>Current Vibe</p>
+                    <div class="vibe-text">${getVibe()}</div>
+                    <div style="font-size:11px; font-weight:800; color:#fff; text-transform:uppercase; margin-bottom:10px;">Activity • Last 7 Days</div>
+                    <div class="streak-dots">${getStreakHTML()}</div>
                     <div class="home-grid">
-                        <div class="shortcut-card" onclick="showView('Chest & Shoulders')">
-                            <div class="last-date">${getLastDone('Chest & Shoulders')}</div>
-                            <h3>Chest</h3>
-                        </div>
-                        <div class="shortcut-card" onclick="showView('Legs & Glutes')">
-                            <div class="last-date">${getLastDone('Legs & Glutes')}</div>
-                            <h3>Legs</h3>
-                        </div>
-                        <div class="shortcut-card" onclick="showView('Arms')">
-                            <div class="last-date">${getLastDone('Arms')}</div>
-                            <h3>Arms</h3>
-                        </div>
-                        <div class="shortcut-card" onclick="showView('Back/Shoulders/Core')">
-                            <div class="last-date">${getLastDone('Back/Shoulders/Core')}</div>
-                            <h3>Back</h3>
-                        </div>
+                        ${keys.map(k => `
+                            <div class="shortcut-card ${k === oldestKey ? 'priority' : ''}" onclick="showView('${k}')">
+                                ${k === oldestKey ? '<div class="priority-badge">NEXT UP</div>' : ''}
+                                <div class="last-date">${getLastDone(k)}</div>
+                                <h3>${k.split(' ')[0]}</h3>
+                            </div>
+                        `).join('')}
                     </div>
                 </div>
             `;
@@ -237,7 +235,7 @@
                 container.innerHTML += `
                     <div class="history-item">
                         <div style="font-weight:800; color:#000; font-size:17px;">${entry.date}</div>
-                        <div style="font-size:11px; font-weight:800; color:var(--ios-blue); text-transform:uppercase; margin-bottom:8px; letter-spacing:1px;">${entry.routine}</div>
+                        <div style="font-size:11px; font-weight:700; color:var(--ios-blue); text-transform:uppercase; margin-bottom:8px; letter-spacing:1px;">${entry.routine}</div>
                         <div style="font-size:15px; color:#333; line-height:1.5;">${entry.summary}</div>
                     </div>`;
             });
@@ -248,5 +246,32 @@
             container.innerHTML += `
                 <div class="exercise-card">
                     <p class="ex-name">${ex.name}</p>
-                    <div>
-                        <span class="badge badge
+                    <div><span class="badge badge-blue">🎯 ${ex.target}</span><span class="badge badge-orange">🚩 ${ex.start}</span></div>
+                    <div class="input-row">
+                        <div class="field"><label>Weight</label><input type="text" id="w-${ex.name}" placeholder="lb"></div>
+                        <div class="field"><label>Notes</label><input type="text" id="n-${ex.name}" placeholder="Sets/Reps"></div>
+                    </div>
+                </div>`;
+        });
+        container.innerHTML += `<button class="finish-btn" onclick="finishWorkout('${name}')">Complete Session</button>`;
+        window.scrollTo(0,0);
+    }
+
+    function finishWorkout(routineName) {
+        const date = new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+        let summary = [];
+        routines[routineName].forEach(ex => {
+            const val = document.getElementById(`w-${ex.name}`).value;
+            if (val) summary.push(`<b>${ex.name}</b>: ${val}lb`);
+        });
+        if (summary.length === 0) return alert("Log a lift first!");
+        const history = JSON.parse(localStorage.getItem('workout_history') || "[]");
+        history.push({ date, routine: routineName, summary: summary.join(", ") });
+        localStorage.setItem('workout_history', JSON.stringify(history));
+        showView('History');
+    }
+
+    showView('Home');
+</script>
+</body>
+</html>
