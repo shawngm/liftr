@@ -10,23 +10,18 @@
 
     <style>
         :root {
-            --glass: rgba(255, 255, 255, 0.9);
+            --glass: rgba(255, 255, 255, 0.92);
             --ios-blue: #007aff;
             --ios-green: #34c759;
+            --ios-orange: #ff9500;
+            --ios-red: #ff3b30;
             --ios-dark: #1c1c1e;
             --soft-gray: #f2f2f7;
             --card-radius: 24px;
         }
 
-        * {
-            box-sizing: border-box;
-            max-width: 100%;
-        }
-
-        html, body {
-            width: 100%;
-            overflow-x: hidden;
-        }
+        * { box-sizing: border-box; max-width: 100%; }
+        html, body { width: 100%; overflow-x: hidden; }
 
         body {
             font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", sans-serif;
@@ -41,21 +36,10 @@
             color: #fff;
         }
 
-        button, input, textarea, select {
-            font: inherit;
-        }
+        button, input, textarea, select { font: inherit; }
+        button { cursor: pointer; -webkit-tap-highlight-color: transparent; }
 
-        button {
-            cursor: pointer;
-            -webkit-tap-highlight-color: transparent;
-        }
-
-        .overlay-dim {
-            position: fixed;
-            inset: 0;
-            background: rgba(0,0,0,0.34);
-            z-index: -1;
-        }
+        .overlay-dim { position: fixed; inset: 0; background: rgba(0,0,0,0.34); z-index: -1; }
 
         .header-nav {
             position: sticky;
@@ -68,15 +52,8 @@
             border-bottom: 0.5px solid rgba(255,255,255,0.1);
         }
 
-        .logo-container {
-            padding: 14px 16px 4px;
-            text-align: center;
-        }
-
-        .app-logo {
-            height: 38px;
-            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5));
-        }
+        .logo-container { padding: 14px 16px 4px; text-align: center; }
+        .app-logo { height: 38px; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5)); }
 
         .tabs {
             display: flex;
@@ -86,10 +63,7 @@
             scroll-snap-type: x mandatory;
             -webkit-overflow-scrolling: touch;
         }
-
-        .tabs::-webkit-scrollbar {
-            display: none;
-        }
+        .tabs::-webkit-scrollbar { display: none; }
 
         .tab-btn {
             border: none;
@@ -103,12 +77,7 @@
             transition: 0.25s;
             scroll-snap-align: start;
         }
-
-        .tab-btn.active {
-            background: #fff;
-            color: #000;
-            transform: scale(1.04);
-        }
+        .tab-btn.active { background: #fff; color: #000; transform: scale(1.04); }
 
         .container {
             width: 100%;
@@ -117,11 +86,7 @@
             padding: 16px 14px calc(120px + env(safe-area-inset-bottom, 0px));
         }
 
-        .vibe-card,
-        .exercise-card,
-        .history-card,
-        .protein-card,
-        .setup-card {
+        .vibe-card, .exercise-card, .history-card, .tracker-card, .setup-card {
             background: var(--glass);
             border-radius: var(--card-radius);
             padding: 18px;
@@ -131,27 +96,10 @@
             backdrop-filter: blur(10px);
         }
 
-        .vibe-label {
-            font-size: 10px;
-            font-weight: 900;
-            color: var(--ios-blue);
-            text-transform: uppercase;
-            letter-spacing: 1.5px;
-            margin-bottom: 10px;
-        }
+        .vibe-label { font-size: 10px; font-weight: 900; color: var(--ios-blue); text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 10px; }
+        .quote { font-size: 17px; font-weight: 800; font-style: italic; line-height: 1.35; margin-bottom: 15px; }
 
-        .quote {
-            font-size: 17px;
-            font-weight: 800;
-            font-style: italic;
-            line-height: 1.35;
-            margin-bottom: 15px;
-        }
-
-        .spotify-link,
-        .small-btn,
-        .finish-btn,
-        .secondary-btn {
+        .spotify-link, .small-btn, .finish-btn, .secondary-btn {
             display: inline-flex;
             align-items: center;
             justify-content: center;
@@ -161,20 +109,9 @@
             font-weight: 900;
         }
 
-        .spotify-link {
-            background: #1DB954;
-            color: #fff;
-            padding: 11px 16px;
-            border-radius: 999px;
-            font-size: 13px;
-        }
+        .spotify-link { background: #1DB954; color: #fff; padding: 11px 16px; border-radius: 999px; font-size: 13px; }
 
-        .home-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 12px;
-        }
-
+        .home-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
         .shortcut-card {
             background: var(--glass);
             padding: 20px 10px;
@@ -187,33 +124,16 @@
             display: flex;
             align-items: center;
             justify-content: center;
+            flex-direction: column;
+            line-height: 1.2;
         }
+        .home-wide { grid-column: span 2; }
+        .shortcut-sub { font-size: 12px; opacity: 0.65; margin-top: 5px; }
 
-        .home-wide {
-            grid-column: span 2;
-        }
-
-        .ex-header {
-            display: flex;
-            justify-content: space-between;
-            gap: 10px;
-            align-items: flex-start;
-            margin-bottom: 10px;
-        }
-
-        .ex-name {
-            font-size: 18px;
-            font-weight: 900;
-            line-height: 1.15;
-        }
-
-        .ex-target {
-            font-size: 11px;
-            opacity: 0.62;
-            font-weight: 800;
-            white-space: nowrap;
-            padding-top: 3px;
-        }
+        .ex-header { display: flex; justify-content: space-between; gap: 10px; align-items: flex-start; margin-bottom: 10px; }
+        .ex-name { font-size: 18px; font-weight: 900; line-height: 1.15; }
+        .ex-target { font-size: 11px; opacity: 0.72; font-weight: 900; white-space: nowrap; padding-top: 3px; }
+        .ex-purpose { font-size: 12px; color: rgba(0,0,0,0.62); font-weight: 750; margin: -3px 0 10px; line-height: 1.3; }
 
         .last-line {
             background: #eef6ff;
@@ -226,30 +146,12 @@
             margin: 0 0 10px;
         }
 
-        .input-group {
-            display: grid;
-            grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-            gap: 10px;
-            width: 100%;
-        }
+        .input-group { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 10px; width: 100%; }
+        .input-row-full { grid-column: span 2; }
 
-        .input-row-full {
-            grid-column: span 2;
-        }
+        label { display: block; font-size: 11px; font-weight: 900; color: rgba(0,0,0,0.58); text-transform: uppercase; letter-spacing: 0.4px; margin-bottom: 5px; }
 
-        label {
-            display: block;
-            font-size: 11px;
-            font-weight: 900;
-            color: rgba(0,0,0,0.58);
-            text-transform: uppercase;
-            letter-spacing: 0.4px;
-            margin-bottom: 5px;
-        }
-
-        input,
-        textarea,
-        select {
+        input, textarea, select {
             width: 100%;
             min-width: 0;
             background: var(--soft-gray);
@@ -260,159 +162,42 @@
             font-weight: 700;
             color: #000;
         }
+        textarea { resize: vertical; min-height: 44px; }
 
-        textarea {
-            resize: vertical;
-            min-height: 44px;
-        }
+        .small-btn { width: 100%; background: #e5f1ff; color: var(--ios-blue); padding: 11px 12px; border-radius: 14px; margin-top: 10px; font-size: 13px; }
+        .finish-btn { background: #000; color: #fff; padding: 19px; border-radius: 20px; font-size: 18px; width: 100%; margin-top: 10px; }
+        .secondary-btn { background: rgba(0,0,0,0.08); color: #000; padding: 14px; border-radius: 18px; font-size: 14px; width: 100%; margin-top: 8px; }
 
-        .small-btn {
-            width: 100%;
-            background: #e5f1ff;
-            color: var(--ios-blue);
-            padding: 11px 12px;
-            border-radius: 14px;
-            margin-top: 10px;
-            font-size: 13px;
-        }
+        .muted { color: rgba(0,0,0,0.62); font-size: 13px; line-height: 1.35; font-weight: 650; }
+        .section-title { color: #fff; font-size: 22px; font-weight: 950; margin: 6px 2px 14px; text-shadow: 0 2px 10px rgba(0,0,0,0.45); }
 
-        .finish-btn {
-            background: #000;
-            color: #fff;
-            padding: 19px;
-            border-radius: 20px;
-            font-size: 18px;
-            width: 100%;
-            margin-top: 10px;
-        }
+        .history-card strong, .tracker-card strong { font-size: 16px; }
+        .history-list { margin: 10px 0 0; padding-left: 16px; font-size: 13px; line-height: 1.45; }
 
-        .secondary-btn {
-            background: rgba(255,255,255,0.9);
-            color: #000;
-            padding: 14px;
-            border-radius: 18px;
-            font-size: 14px;
-            width: 100%;
-            margin-top: 8px;
-        }
+        .stat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 12px; }
+        .stat-box { background: rgba(0,0,0,0.06); border-radius: 18px; padding: 13px; }
+        .stat-label { font-size: 10px; font-weight: 950; text-transform: uppercase; letter-spacing: 0.5px; opacity: 0.55; }
+        .stat-number { font-size: 26px; font-weight: 950; margin-top: 4px; line-height: 1; }
 
-        .muted {
-            color: rgba(0,0,0,0.62);
-            font-size: 13px;
-            line-height: 1.35;
-            font-weight: 650;
-        }
+        .progress-wrap { background: rgba(0,0,0,0.08); border-radius: 999px; height: 14px; overflow: hidden; margin: 12px 0; }
+        .progress-fill { background: var(--ios-green); height: 100%; width: 0; border-radius: 999px; transition: width 0.25s ease; }
+        .progress-fill.calories { background: var(--ios-orange); }
+        .progress-fill.over { background: var(--ios-red); }
 
-        .section-title {
-            color: #fff;
-            font-size: 22px;
-            font-weight: 950;
-            margin: 6px 2px 14px;
-            text-shadow: 0 2px 10px rgba(0,0,0,0.45);
-        }
+        .tracker-log-row { display: flex; justify-content: space-between; gap: 10px; align-items: center; border-top: 1px solid rgba(0,0,0,0.08); padding: 10px 0; font-size: 14px; font-weight: 750; }
+        .delete-btn { border: none; background: #ffe5e5; color: #b00020; border-radius: 999px; padding: 7px 10px; font-weight: 900; font-size: 12px; }
 
-        .history-card strong,
-        .protein-card strong {
-            font-size: 16px;
-        }
+        .badge-row { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 10px; }
+        .badge { background: rgba(0,0,0,0.08); border-radius: 999px; padding: 8px 10px; font-size: 12px; font-weight: 850; }
 
-        .history-list {
-            margin: 10px 0 0;
-            padding-left: 16px;
-            font-size: 13px;
-            line-height: 1.45;
-        }
-
-        .progress-wrap {
-            background: rgba(0,0,0,0.08);
-            border-radius: 999px;
-            height: 14px;
-            overflow: hidden;
-            margin: 12px 0;
-        }
-
-        .progress-fill {
-            background: var(--ios-green);
-            height: 100%;
-            width: 0;
-            border-radius: 999px;
-            transition: width 0.25s ease;
-        }
-
-        .protein-total {
-            font-size: 34px;
-            font-weight: 950;
-            line-height: 1;
-            margin: 10px 0 2px;
-        }
-
-        .protein-log-row {
-            display: flex;
-            justify-content: space-between;
-            gap: 10px;
-            align-items: center;
-            border-top: 1px solid rgba(0,0,0,0.08);
-            padding: 10px 0;
-            font-size: 14px;
-            font-weight: 750;
-        }
-
-        .delete-btn {
-            border: none;
-            background: #ffe5e5;
-            color: #b00020;
-            border-radius: 999px;
-            padding: 7px 10px;
-            font-weight: 900;
-            font-size: 12px;
-        }
-
-        #victoryOverlay {
-            position: fixed;
-            inset: 0;
-            background: rgba(0,0,0,0.9);
-            z-index: 2000;
-            display: none;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-            padding: 24px;
-        }
-
-        #victoryBadge {
-            width: 80%;
-            max-width: 300px;
-            margin-bottom: 20px;
-            transform: scale(0.5);
-            transition: 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        }
+        #victoryOverlay { position: fixed; inset: 0; background: rgba(0,0,0,0.9); z-index: 2000; display: none; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 24px; }
+        #victoryBadge { width: 80%; max-width: 300px; margin-bottom: 20px; transform: scale(0.5); transition: 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
 
         @media (max-width: 360px) {
-            .container {
-                padding-left: 10px;
-                padding-right: 10px;
-            }
-
-            .input-group {
-                grid-template-columns: 1fr;
-            }
-
-            .input-row-full {
-                grid-column: span 1;
-            }
-
-            .home-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .home-wide {
-                grid-column: span 1;
-            }
-
-            .ex-header {
-                flex-direction: column;
-            }
+            .container { padding-left: 10px; padding-right: 10px; }
+            .input-group, .home-grid, .stat-grid { grid-template-columns: 1fr; }
+            .input-row-full, .home-wide { grid-column: span 1; }
+            .ex-header { flex-direction: column; }
         }
     </style>
 </head>
@@ -427,10 +212,10 @@
     <div class="tabs" id="tabBar">
         <button class="tab-btn active" onclick="showView('Home')">Lounge</button>
         <button class="tab-btn" onclick="showView('Chest & Shoulders')">Chest</button>
-        <button class="tab-btn" onclick="showView('Legs & Glutes')">Legs</button>
+        <button class="tab-btn" onclick="showView('Legs & Glutes')">Glutes</button>
         <button class="tab-btn" onclick="showView('Arms')">Arms</button>
-        <button class="tab-btn" onclick="showView('Back/Shoulders/Core')">Back</button>
-        <button class="tab-btn" onclick="showView('Protein')">Protein</button>
+        <button class="tab-btn" onclick="showView('Back/Shoulders/Core')">Back/Core</button>
+        <button class="tab-btn" onclick="showView('Plan')">Plan</button>
         <button class="tab-btn" onclick="showView('History')">History</button>
     </div>
 </div>
@@ -447,8 +232,9 @@
     const STORAGE_KEYS = {
         history: 'liftr_history_v2',
         legacyHistory: 'liftr_history',
-        protein: 'liftr_protein_v1',
-        proteinGoal: 'liftr_protein_goal'
+        nutrition: 'liftr_nutrition_v1',
+        legacyProtein: 'liftr_protein_v1',
+        plan: 'liftr_plan_settings_v1'
     };
 
     const themes = {
@@ -461,37 +247,40 @@
 
     const routines = {
         "Chest & Shoulders": [
-            { name: "Incline Bench Press", target: "3x8-10", start: "35 lbs" },
-            { name: "Chest Press Machine", target: "3x8-10", start: "25-30 lbs" },
-            { name: "Shoulder Press", target: "3x8-10", start: "60 lbs" },
-            { name: "Dumbbell Fly", target: "3x10-12", start: "20-25 lbs" },
-            { name: "Lateral Raise Machine", target: "3x10-12", start: "50 lbs" },
-            { name: "Pectoral Machine", target: "3x10", start: "210 lbs" },
-            { name: "Cable Chest Press", target: "3x8-10", start: "33 lbs" }
+            { name: "Incline Dumbbell Press", target: "4x8-10", start: "35 lbs", purpose: "Upper chest focus for a fuller, tighter chest." },
+            { name: "Flat Dumbbell or Bench Press", target: "3x8-10", start: "Find working weight", purpose: "Main chest strength move." },
+            { name: "Pectoral Machine", target: "3x10-12", start: "210 lbs", purpose: "Controlled chest squeeze and volume." },
+            { name: "Cable Chest Press", target: "3x10", start: "33 lbs", purpose: "Constant tension; slow reps." },
+            { name: "Shoulder Press", target: "4x8-10", start: "60 lbs", purpose: "Bigger front/side delts." },
+            { name: "Lateral Raise Machine or Dumbbells", target: "4x12-15", start: "50 lbs", purpose: "Shoulder width and cap." },
+            { name: "Dumbbell Fly", target: "2-3x12", start: "20-25 lbs", purpose: "Chest stretch finisher; do not overextend shoulders." }
         ],
         "Legs & Glutes": [
-            { name: "Leg Press", target: "4x8-10", start: "4x45 lbs" },
-            { name: "Rear Kick Machine", target: "4x10 each", start: "100 lbs" },
-            { name: "Squat or Hack Squat", target: "3x8-10", start: "70 lbs" },
-            { name: "Leg Extensions", target: "3x10-12", start: "115 lbs" },
-            { name: "Hamstring Curl", target: "3x10-12", start: "Find working weight" },
-            { name: "Stairs", target: "12-20 min", start: "Level 6-8" }
+            { name: "Glute Bridge or Hip Thrust", target: "4x10-12", start: "Dumbbell/Kettlebell", purpose: "Primary glute growth move. Pause/squeeze at the top." },
+            { name: "Sumo Squat", target: "4x10-12", start: "Dumbbell/Kettlebell", purpose: "Glutes, adductors, legs. Keep chest tall." },
+            { name: "Romanian Deadlift", target: "4x8-10", start: "Dumbbells", purpose: "Glute/hamstring hinge. Slow stretch, flat back." },
+            { name: "Rear Kick Machine", target: "3x12 each", start: "100 lbs", purpose: "Glute isolation after heavy work." },
+            { name: "Leg Press - High/Wide Feet", target: "3x10", start: "4x45 lbs", purpose: "Glute-biased leg press. Drive through heels." },
+            { name: "Good Mornings", target: "2-3x12", start: "Light DB/KB", purpose: "Light hinge pattern and posterior chain control." },
+            { name: "Stairs or Incline Walk", target: "8-12 min", start: "Level 6-8", purpose: "Conditioning finisher for fat loss support." }
         ],
         "Arms": [
-            { name: "Zottman Curls", target: "3x8-10", start: "25 lbs" },
-            { name: "Incline Dumbbell Curl", target: "3x8-10", start: "30 lbs" },
-            { name: "Hammer Curl", target: "3x10", start: "25 lbs" },
-            { name: "Tricep Machine", target: "3x10", start: "90 lbs" },
-            { name: "Cable Rope Pulldown", target: "3x10-12", start: "100 lbs" },
-            { name: "Preacher Curl Machine", target: "3x8-10", start: "50 lbs" }
+            { name: "Preacher Curl Machine", target: "4x8-10", start: "50 lbs", purpose: "Strict biceps work." },
+            { name: "Incline Dumbbell Curl", target: "3x8-10", start: "30 lbs", purpose: "Long-head biceps stretch." },
+            { name: "Hammer Curl", target: "3x10-12", start: "25 lbs", purpose: "Forearms and thicker arms." },
+            { name: "Tricep Machine", target: "4x10", start: "90 lbs", purpose: "Heavy triceps strength." },
+            { name: "Cable Rope Pulldown", target: "3x12", start: "100 lbs", purpose: "Triceps pump and elbow-friendly volume." },
+            { name: "Overhead Dumbbell Tricep Extension", target: "3x10-12", start: "Find working weight", purpose: "Long-head triceps for arm size." },
+            { name: "Lateral Raise Burnout", target: "2x15-20", start: "Light DB", purpose: "Extra shoulder cap work." }
         ],
         "Back/Shoulders/Core": [
-            { name: "Cable Row", target: "3x8-10", start: "100 lbs" },
-            { name: "Low Row", target: "3x8-10", start: "90 lbs" },
-            { name: "Lat Pulldown Bar", target: "3x8-10", start: "85 lbs" },
-            { name: "Vertical Traction Machine", target: "3x8-10", start: "115 lbs" },
-            { name: "Reverse Machine", target: "3x10-12", start: "55 lbs" },
-            { name: "Crunches", target: "3 sets", start: "Body" }
+            { name: "Lat Pulldown Bar", target: "4x8-10", start: "85 lbs", purpose: "Back width and V-taper." },
+            { name: "Cable Row", target: "4x8-10", start: "100 lbs", purpose: "Mid-back thickness and posture." },
+            { name: "Low Row", target: "3x10", start: "90 lbs", purpose: "Controlled squeeze; no jerking." },
+            { name: "Reverse Machine", target: "3x12-15", start: "55 lbs", purpose: "Rear delts for balanced shoulders." },
+            { name: "Vertical Traction Machine", target: "3x8-10", start: "115 lbs", purpose: "Heavy pull variation." },
+            { name: "Weighted Crunch or Cable Crunch", target: "3x12-15", start: "Body/light", purpose: "Build visible abs as belly fat drops." },
+            { name: "Plank or Dead Bug", target: "3 rounds", start: "30-45 sec", purpose: "Core stability and waist control." }
         ]
     };
 
@@ -501,111 +290,155 @@
         return themes[(diff % 5) + 1];
     }
 
-    function safeId(value) {
-        return value.replace(/[^a-z0-9]/gi, '-').toLowerCase();
-    }
+    function safeId(value) { return value.replace(/[^a-z0-9]/gi, '-').toLowerCase(); }
+    function todayKey() { return new Date().toISOString().slice(0, 10); }
 
     function getHistory() {
         const current = JSON.parse(localStorage.getItem(STORAGE_KEYS.history) || "[]");
         if (current.length) return current;
-
         const legacy = JSON.parse(localStorage.getItem(STORAGE_KEYS.legacyHistory) || "[]");
-        return legacy.map(item => ({
-            date: item.date,
-            routine: item.routine,
-            summary: item.summary,
-            exercises: []
-        }));
+        return legacy.map(item => ({ date: item.date, routine: item.routine, summary: item.summary, exercises: [] }));
     }
 
-    function saveHistory(history) {
-        localStorage.setItem(STORAGE_KEYS.history, JSON.stringify(history));
-    }
+    function saveHistory(history) { localStorage.setItem(STORAGE_KEYS.history, JSON.stringify(history)); }
 
     function getLastPerformance(exerciseName) {
         const history = getHistory().slice().reverse();
-
         for (const session of history) {
             if (!session.exercises) continue;
             const match = session.exercises.find(ex => ex.name === exerciseName && (ex.weight || ex.reps || ex.notes));
             if (match) return { ...match, date: session.date };
         }
-
         return null;
     }
 
     function formatLast(last, fallback) {
         if (!last) return `Starter: ${fallback || 'Find a solid working weight'}`;
-
         const parts = [];
         if (last.weight) parts.push(last.weight);
         if (last.reps) parts.push(`${last.reps} reps`);
         if (last.notes) parts.push(last.notes);
-
         return `Last time (${last.date}): ${parts.join(' • ')}`;
     }
 
     function useLast(exerciseName) {
         const last = getLastPerformance(exerciseName);
         if (!last) return;
-
         const id = safeId(exerciseName);
         document.getElementById(`w-${id}`).value = last.weight || '';
         document.getElementById(`r-${id}`).value = last.reps || '';
         document.getElementById(`n-${id}`).value = last.notes || '';
     }
 
-    function todayKey() {
-        return new Date().toISOString().slice(0, 10);
+    function defaultPlan() {
+        return {
+            age: 44,
+            sex: 'male',
+            heightFeet: 5,
+            heightInches: 11,
+            weightLbs: 198,
+            activity: 1.465,
+            proteinGoal: 180,
+            calorieTarget: 2150
+        };
     }
 
-    function getProteinLog() {
-        return JSON.parse(localStorage.getItem(STORAGE_KEYS.protein) || "{}");
+    function getPlan() {
+        const saved = JSON.parse(localStorage.getItem(STORAGE_KEYS.plan) || "null");
+        return { ...defaultPlan(), ...(saved || {}) };
     }
 
-    function saveProteinLog(log) {
-        localStorage.setItem(STORAGE_KEYS.protein, JSON.stringify(log));
+    function savePlan(plan) { localStorage.setItem(STORAGE_KEYS.plan, JSON.stringify(plan)); }
+
+    function calculatePlanNumbers(plan = getPlan()) {
+        const kg = plan.weightLbs * 0.45359237;
+        const cm = ((Number(plan.heightFeet) * 12) + Number(plan.heightInches)) * 2.54;
+        const sexOffset = plan.sex === 'female' ? -161 : 5;
+        const bmr = Math.round((10 * kg) + (6.25 * cm) - (5 * Number(plan.age)) + sexOffset);
+        const maintenance = Math.round(bmr * Number(plan.activity));
+        const target = Number(plan.calorieTarget) || Math.max(1500, maintenance - 500);
+        return {
+            bmr,
+            maintenance,
+            target,
+            deficit: maintenance - target,
+            mild: maintenance - 250,
+            steady: maintenance - 500,
+            aggressive: maintenance - 750
+        };
     }
 
-    function getProteinGoal() {
-        return Number(localStorage.getItem(STORAGE_KEYS.proteinGoal) || 180);
+    function getNutritionLog() {
+        const current = JSON.parse(localStorage.getItem(STORAGE_KEYS.nutrition) || "{}");
+        if (Object.keys(current).length) return current;
+
+        const legacyProtein = JSON.parse(localStorage.getItem(STORAGE_KEYS.legacyProtein) || "{}");
+        const migrated = {};
+        Object.keys(legacyProtein).forEach(day => {
+            migrated[day] = legacyProtein[day].map(item => ({
+                protein: Number(item.grams || 0),
+                calories: 0,
+                source: item.source || 'Protein',
+                time: item.time || ''
+            }));
+        });
+        return migrated;
     }
 
-    function setProteinGoal() {
-        const goal = Number(document.getElementById('protein-goal').value);
-        if (!goal || goal < 50) return;
-        localStorage.setItem(STORAGE_KEYS.proteinGoal, String(goal));
-        showView('Protein');
+    function saveNutritionLog(log) { localStorage.setItem(STORAGE_KEYS.nutrition, JSON.stringify(log)); }
+
+    function todaysNutrition() {
+        const entries = getNutritionLog()[todayKey()] || [];
+        return {
+            entries,
+            protein: entries.reduce((sum, item) => sum + Number(item.protein || 0), 0),
+            calories: entries.reduce((sum, item) => sum + Number(item.calories || 0), 0)
+        };
     }
 
-    function addProtein() {
-        const grams = Number(document.getElementById('protein-grams').value);
-        const source = document.getElementById('protein-source').value.trim();
-        const time = document.getElementById('protein-time').value;
+    function addNutrition() {
+        const protein = Number(document.getElementById('protein-grams').value || 0);
+        const calories = Number(document.getElementById('calories').value || 0);
+        const source = document.getElementById('nutrition-source').value.trim();
+        const time = document.getElementById('nutrition-time').value;
 
-        if (!grams || grams <= 0) return;
+        if ((!protein || protein <= 0) && (!calories || calories <= 0)) return;
 
-        const log = getProteinLog();
+        const log = getNutritionLog();
         const key = todayKey();
         log[key] = log[key] || [];
         log[key].push({
-            grams,
-            source: source || 'Protein',
+            protein,
+            calories,
+            source: source || 'Food / Drink',
             time: time || new Date().toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' })
         });
-
-        saveProteinLog(log);
-        showView('Protein');
+        saveNutritionLog(log);
+        showView('Plan');
     }
 
-    function deleteProtein(index) {
-        const log = getProteinLog();
+    function deleteNutrition(index) {
+        const log = getNutritionLog();
         const key = todayKey();
         if (!log[key]) return;
-
         log[key].splice(index, 1);
-        saveProteinLog(log);
-        showView('Protein');
+        saveNutritionLog(log);
+        showView('Plan');
+    }
+
+    function savePlanFromForm() {
+        const plan = {
+            age: Number(document.getElementById('plan-age').value),
+            sex: document.getElementById('plan-sex').value,
+            heightFeet: Number(document.getElementById('plan-feet').value),
+            heightInches: Number(document.getElementById('plan-inches').value),
+            weightLbs: Number(document.getElementById('plan-weight').value),
+            activity: Number(document.getElementById('plan-activity').value),
+            proteinGoal: Number(document.getElementById('plan-protein').value),
+            calorieTarget: Number(document.getElementById('plan-calories').value)
+        };
+        savePlan(plan);
+        showView('Plan');
     }
 
     function showView(name) {
@@ -614,49 +447,44 @@
 
         document.querySelectorAll('.tab-btn').forEach(button => {
             const isHome = name === 'Home' && button.innerText === 'Lounge';
-            button.classList.toggle('active', button.innerText === name || isHome);
+            const isPlan = name === 'Plan' && button.innerText === 'Plan';
+            button.classList.toggle('active', button.innerText === name || isHome || isPlan);
         });
 
         const container = document.getElementById('content');
         container.innerHTML = '';
 
-        if (name === 'Home') {
-            const goal = getProteinGoal();
-            const proteinLog = getProteinLog()[todayKey()] || [];
-            const proteinTotal = proteinLog.reduce((sum, item) => sum + Number(item.grams || 0), 0);
-
-            container.innerHTML = `
-                <div class="vibe-card">
-                    <div class="vibe-label">Today's Vibe: ${theme.name}</div>
-                    <div class="quote">${theme.quote}</div>
-                    <a href="${theme.playlist}" target="_blank" rel="noopener" class="spotify-link">▶ Open Vibe Playlist</a>
-                </div>
-                <div class="home-grid">
-                    <div class="shortcut-card" onclick="showView('Chest & Shoulders')">CHEST</div>
-                    <div class="shortcut-card" onclick="showView('Legs & Glutes')">LEGS</div>
-                    <div class="shortcut-card" onclick="showView('Arms')">ARMS</div>
-                    <div class="shortcut-card" onclick="showView('Back/Shoulders/Core')">BACK</div>
-                    <div class="shortcut-card home-wide" onclick="showView('Protein')">PROTEIN: ${proteinTotal}g / ${goal}g</div>
-                </div>
-            `;
-            return;
-        }
-
-        if (name === 'Protein') {
-            renderProtein(container);
-            return;
-        }
-
-        if (name === 'History') {
-            renderHistory(container);
-            return;
-        }
-
+        if (name === 'Home') return renderHome(container, theme);
+        if (name === 'Plan') return renderPlan(container);
+        if (name === 'History') return renderHistory(container);
         renderRoutine(container, name);
     }
 
+    function renderHome(container, theme) {
+        const plan = getPlan();
+        const numbers = calculatePlanNumbers(plan);
+        const today = todaysNutrition();
+        const calRemaining = numbers.target - today.calories;
+
+        container.innerHTML = `
+            <div class="vibe-card">
+                <div class="vibe-label">Today's Vibe: ${theme.name}</div>
+                <div class="quote">${theme.quote}</div>
+                <a href="${theme.playlist}" target="_blank" rel="noopener" class="spotify-link">▶ Open Vibe Playlist</a>
+            </div>
+            <div class="home-grid">
+                <div class="shortcut-card" onclick="showView('Chest & Shoulders')">CHEST<span class="shortcut-sub">Press + shoulders</span></div>
+                <div class="shortcut-card" onclick="showView('Legs & Glutes')">GLUTES<span class="shortcut-sub">Legs + posterior chain</span></div>
+                <div class="shortcut-card" onclick="showView('Arms')">ARMS<span class="shortcut-sub">Biceps + triceps</span></div>
+                <div class="shortcut-card" onclick="showView('Back/Shoulders/Core')">BACK/CORE<span class="shortcut-sub">V-taper + abs</span></div>
+                <div class="shortcut-card home-wide" onclick="showView('Plan')">PLAN<span class="shortcut-sub">${today.protein}g protein • ${today.calories}/${numbers.target} cal • ${calRemaining} left</span></div>
+            </div>
+        `;
+    }
+
     function renderRoutine(container, name) {
-        container.innerHTML = `<div class="section-title">${name}</div>`;
+        container.innerHTML = `<div class="section-title">${name}</div>
+            <div class="tracker-card"><strong>45–60 minute focus</strong><p class="muted">Move with intent: 2–3 warm-up minutes, 60–90 seconds rest on most sets, 2 minutes on heavy sets, and stop any movement that causes sharp pain.</p></div>`;
 
         routines[name].forEach(ex => {
             const id = safeId(ex.name);
@@ -669,6 +497,7 @@
                         <div class="ex-name">${ex.name}</div>
                         <div class="ex-target">${ex.target}</div>
                     </div>
+                    <div class="ex-purpose">${ex.purpose || ''}</div>
                     <div class="last-line">${lastText}</div>
                     <div class="input-group">
                         <div>
@@ -693,9 +522,7 @@
 
     function renderHistory(container) {
         const hist = getHistory().slice().reverse();
-
         container.innerHTML = `<div class="section-title">History</div>`;
-
         if (!hist.length) {
             container.innerHTML += `<div class="history-card"><strong>No sessions yet.</strong><p class="muted">Complete a workout and your most recent numbers will appear here and on future exercise cards.</p></div>`;
             return;
@@ -707,75 +534,96 @@
                 ? `<ul class="history-list">${exerciseList.map(ex => `<li><strong>${ex.name}:</strong> ${[ex.weight, ex.reps ? `${ex.reps} reps` : '', ex.notes].filter(Boolean).join(' • ')}</li>`).join('')}</ul>`
                 : `<p class="muted">${session.summary || 'Workout completed.'}</p>`;
 
-            container.innerHTML += `
-                <div class="history-card">
-                    <strong>${session.date}</strong><br>
-                    <small>${session.routine}</small>
-                    ${listHtml}
-                </div>`;
+            container.innerHTML += `<div class="history-card"><strong>${session.date}</strong><br><small>${session.routine}</small>${listHtml}</div>`;
         });
     }
 
-    function renderProtein(container) {
-        const log = getProteinLog();
-        const key = todayKey();
-        const entries = log[key] || [];
-        const total = entries.reduce((sum, item) => sum + Number(item.grams || 0), 0);
-        const goal = getProteinGoal();
-        const progress = Math.min(100, Math.round((total / goal) * 100));
+    function renderPlan(container) {
+        const plan = getPlan();
+        const numbers = calculatePlanNumbers(plan);
+        const today = todaysNutrition();
+        const proteinProgress = Math.min(100, Math.round((today.protein / plan.proteinGoal) * 100));
+        const calorieProgress = Math.min(130, Math.round((today.calories / numbers.target) * 100));
+        const calRemaining = numbers.target - today.calories;
+        const calorieClass = today.calories > numbers.target ? 'progress-fill calories over' : 'progress-fill calories';
 
         container.innerHTML = `
-            <div class="section-title">Protein Tracker</div>
-            <div class="protein-card">
-                <strong>Today's Protein</strong>
-                <div class="protein-total">${total}g</div>
-                <div class="muted">Goal: ${goal}g. Aim for steady servings, especially midday and after training, instead of trying to cram it all late.</div>
-                <div class="progress-wrap"><div class="progress-fill" style="width:${progress}%"></div></div>
+            <div class="section-title">Protein + Deficit Plan</div>
+
+            <div class="tracker-card">
+                <strong>Today</strong>
+                <div class="stat-grid">
+                    <div class="stat-box"><div class="stat-label">Protein</div><div class="stat-number">${today.protein}g</div><div class="muted">Goal ${plan.proteinGoal}g</div></div>
+                    <div class="stat-box"><div class="stat-label">Calories</div><div class="stat-number">${today.calories}</div><div class="muted">Target ${numbers.target}</div></div>
+                </div>
+                <div class="progress-wrap"><div class="progress-fill" style="width:${proteinProgress}%"></div></div>
+                <div class="progress-wrap"><div class="${calorieClass}" style="width:${Math.min(100, calorieProgress)}%"></div></div>
+                <p class="muted">${calRemaining >= 0 ? `${calRemaining} calories left today.` : `${Math.abs(calRemaining)} calories over target today.`} Maintenance estimate: ${numbers.maintenance}/day. Current target deficit: ${numbers.deficit}/day.</p>
             </div>
 
-            <div class="protein-card">
-                <strong>Add Protein</strong>
+            <div class="tracker-card">
+                <strong>Add Food / Protein</strong>
                 <div class="input-group" style="margin-top:12px;">
                     <div>
-                        <label for="protein-grams">Grams</label>
+                        <label for="protein-grams">Protein g</label>
                         <input inputmode="numeric" type="number" id="protein-grams" placeholder="35">
                     </div>
                     <div>
-                        <label for="protein-time">Time</label>
-                        <input type="time" id="protein-time">
+                        <label for="calories">Calories</label>
+                        <input inputmode="numeric" type="number" id="calories" placeholder="300">
                     </div>
-                    <div class="input-row-full">
-                        <label for="protein-source">Source</label>
-                        <input type="text" id="protein-source" placeholder="Shake, eggs, chicken, Greek yogurt...">
+                    <div>
+                        <label for="nutrition-time">Time</label>
+                        <input type="time" id="nutrition-time">
+                    </div>
+                    <div>
+                        <label for="nutrition-source">Source</label>
+                        <input type="text" id="nutrition-source" placeholder="Shake, chicken, eggs...">
                     </div>
                 </div>
-                <button class="finish-btn" onclick="addProtein()">Add Protein</button>
+                <button class="finish-btn" onclick="addNutrition()">Add</button>
             </div>
 
-            <div class="protein-card">
-                <strong>Timing Guide</strong>
-                <p class="muted">Simple target: 30-50g per serving, 3-5 times per day. Practical windows: late morning, lunch, post-workout, dinner, and a lighter evening option if needed. Avoid making your only large protein hit very early or right before bed.</p>
+            <div class="tracker-card">
+                <strong>Calorie Deficit Blueprint</strong>
+                <div class="badge-row">
+                    <span class="badge">BMR: ${numbers.bmr}</span>
+                    <span class="badge">Maintain: ${numbers.maintenance}</span>
+                    <span class="badge">Mild: ${numbers.mild}</span>
+                    <span class="badge">Steady: ${numbers.steady}</span>
+                    <span class="badge">Aggressive: ${numbers.aggressive}</span>
+                </div>
+                <p class="muted">Default is built from your calculator setup: 44-year-old male, 5'11&quot;, 198 lb, activity factor 1.465. The working target is about ${numbers.target} calories/day with ${plan.proteinGoal}g protein/day. That gives fat-loss pressure while protecting lifting performance.</p>
             </div>
 
-            <div class="protein-card">
-                <strong>Daily Goal</strong>
+            <div class="tracker-card">
+                <strong>Simple Rules</strong>
+                <p class="muted">Protein first. Keep most protein servings around 30–50g. Keep calories honest, especially liquid calories, buns, fried sides, beer, sweets, and late snacks. Love handles and belly fat come down through the deficit; core work builds the abs that show once fat drops.</p>
+            </div>
+
+            <div class="tracker-card">
+                <strong>Settings</strong>
                 <div class="input-group" style="margin-top:12px;">
-                    <div class="input-row-full">
-                        <label for="protein-goal">Protein Goal</label>
-                        <input inputmode="numeric" type="number" id="protein-goal" value="${goal}">
-                    </div>
+                    <div><label for="plan-age">Age</label><input inputmode="numeric" type="number" id="plan-age" value="${plan.age}"></div>
+                    <div><label for="plan-sex">Sex</label><select id="plan-sex"><option value="male" ${plan.sex === 'male' ? 'selected' : ''}>Male</option><option value="female" ${plan.sex === 'female' ? 'selected' : ''}>Female</option></select></div>
+                    <div><label for="plan-feet">Feet</label><input inputmode="numeric" type="number" id="plan-feet" value="${plan.heightFeet}"></div>
+                    <div><label for="plan-inches">Inches</label><input inputmode="numeric" type="number" id="plan-inches" value="${plan.heightInches}"></div>
+                    <div><label for="plan-weight">Weight lb</label><input inputmode="decimal" type="number" id="plan-weight" value="${plan.weightLbs}"></div>
+                    <div><label for="plan-activity">Activity</label><input inputmode="decimal" type="number" step="0.001" id="plan-activity" value="${plan.activity}"></div>
+                    <div><label for="plan-protein">Protein Goal</label><input inputmode="numeric" type="number" id="plan-protein" value="${plan.proteinGoal}"></div>
+                    <div><label for="plan-calories">Calorie Target</label><input inputmode="numeric" type="number" id="plan-calories" value="${numbers.target}"></div>
                 </div>
-                <button class="secondary-btn" onclick="setProteinGoal()">Save Goal</button>
+                <button class="secondary-btn" onclick="savePlanFromForm()">Save Settings</button>
             </div>
 
-            <div class="protein-card">
+            <div class="tracker-card">
                 <strong>Today's Log</strong>
-                ${entries.length ? entries.map((item, index) => `
-                    <div class="protein-log-row">
-                        <span>${item.time} — ${item.grams}g ${item.source ? `• ${item.source}` : ''}</span>
-                        <button class="delete-btn" onclick="deleteProtein(${index})">Delete</button>
+                ${today.entries.length ? today.entries.map((item, index) => `
+                    <div class="tracker-log-row">
+                        <span>${item.time} — ${item.protein || 0}g protein • ${item.calories || 0} cal ${item.source ? `• ${item.source}` : ''}</span>
+                        <button class="delete-btn" onclick="deleteNutrition(${index})">Delete</button>
                     </div>
-                `).join('') : `<p class="muted">No protein logged yet today.</p>`}
+                `).join('') : `<p class="muted">No food or protein logged yet today.</p>`}
             </div>
         `;
     }
@@ -797,13 +645,7 @@
         const summary = completed.map(ex => `${ex.name}: ${[ex.weight, ex.reps ? `${ex.reps} reps` : '', ex.notes].filter(Boolean).join(' • ')}`).join(", ");
 
         const history = getHistory();
-        history.push({
-            date: new Date().toLocaleDateString(),
-            timestamp: new Date().toISOString(),
-            routine,
-            summary,
-            exercises
-        });
+        history.push({ date: new Date().toLocaleDateString(), timestamp: new Date().toISOString(), routine, summary, exercises });
         saveHistory(history);
 
         const overlay = document.getElementById('victoryOverlay');
@@ -811,7 +653,6 @@
         badge.src = theme.badge;
         overlay.style.display = 'flex';
         setTimeout(() => badge.style.transform = 'scale(1)', 100);
-
         setTimeout(() => {
             overlay.style.display = 'none';
             badge.style.transform = 'scale(0.5)';
